@@ -28,13 +28,12 @@ public class CartItem {
     @Column(nullable = false)
     private Integer quantity = 1;
 
-    // public BigDecimal getSubtotal() {
-    // if (product != null && product.getDiscountedPrice() != null && quantity !=
-    // null) {
-    // return product.getDiscountedPrice().multiply(BigDecimal.valueOf(quantity));
-    // }
-    // return BigDecimal.ZERO;
-    // }
+    public BigDecimal getSubtotal() {
+        if (product != null && product.getDiscountedPrice() != null && quantity != null) {
+            return product.getDiscountedPrice().multiply(BigDecimal.valueOf(quantity));
+        }
+        return BigDecimal.ZERO;
+    }
 
     public void incrementQuantity() {
         this.quantity++;

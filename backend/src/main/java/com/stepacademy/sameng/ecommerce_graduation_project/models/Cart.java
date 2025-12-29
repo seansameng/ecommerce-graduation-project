@@ -57,7 +57,7 @@ public class Cart {
 
     public BigDecimal getTotalAmount() {
         return cartItems.stream()
-                // .map(CartItem::getSubtotal)
+                .map(CartItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

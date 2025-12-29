@@ -52,6 +52,6 @@ public class Product {
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
     @Column(name = "created_at")
-    private LocalDateTime createdAt;    
+    private LocalDateTime createdAt;
 
 }
