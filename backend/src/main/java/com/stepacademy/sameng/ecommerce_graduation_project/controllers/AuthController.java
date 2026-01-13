@@ -8,16 +8,22 @@ import com.stepacademy.sameng.ecommerce_graduation_project.dtos.LoginRequest;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 public class AuthController {
+
+    private final AuthService authService;
+
     // AuthController implementation goes here
     @PostMapping("/login")
     public ApiResponse login(@RequestBody LoginRequest loginRequest) {
         // Authentication logic goes here
+        authService.login(loginRequest);
+
         return ApiResponse.success("Login successful", null);
     }
 
     @PostMapping("/register")
     public ApiResponse register(@RequestBody LoginRequest registerRequest) {
         // Registration logic goes here
+        authService.register(registerRequest);
         return ApiResponse.success("Registration successful", null);
 
     }
