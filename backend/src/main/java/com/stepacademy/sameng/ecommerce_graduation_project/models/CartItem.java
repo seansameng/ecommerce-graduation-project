@@ -1,8 +1,5 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.models;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,8 +39,6 @@ public class CartItem {
     private Integer quantity = 1;
 
     public BigDecimal getSubtotal() {
-        if (product != null && product.getDiscountedPrice() != null && quantity != null) {
-            return product.getDiscountedPrice().multiply(BigDecimal.valueOf(quantity));
         if (product != null && product.getPrice() != null && quantity != null) {
             return BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(quantity));
         }
@@ -51,13 +46,10 @@ public class CartItem {
     }
 
     public void incrementQuantity() {
-        this.quantity++;
         quantity++;
     }
 
     public void decrementQuantity() {
-        if (this.quantity > 1) {
-            this.quantity--;
         if (quantity > 1) {
             quantity--;
         }
