@@ -3,7 +3,20 @@ package com.stepacademy.sameng.ecommerce_graduation_project.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "cart_items")
@@ -31,17 +44,22 @@ public class CartItem {
     public BigDecimal getSubtotal() {
         if (product != null && product.getDiscountedPrice() != null && quantity != null) {
             return product.getDiscountedPrice().multiply(BigDecimal.valueOf(quantity));
+        if (product != null && product.getPrice() != null && quantity != null) {
+            return BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(quantity));
         }
         return BigDecimal.ZERO;
     }
 
     public void incrementQuantity() {
         this.quantity++;
+        quantity++;
     }
 
     public void decrementQuantity() {
         if (this.quantity > 1) {
             this.quantity--;
+        if (quantity > 1) {
+            quantity--;
         }
     }
 }
