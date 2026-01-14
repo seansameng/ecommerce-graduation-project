@@ -5,9 +5,15 @@ import com.stepacademy.sameng.ecommerce_graduation_project.dto.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Role;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.LoginRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.RegisterRequest;
+
 import lombok.Builder;
 
 @Service
