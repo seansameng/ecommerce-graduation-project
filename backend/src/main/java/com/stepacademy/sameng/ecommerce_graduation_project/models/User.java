@@ -84,4 +84,23 @@ public class User {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public Role getRole() {
+        return role;
+    }
+    public Boolean getEnabled() {
+        return enabled;
+    }
+    
+
+
+
 }

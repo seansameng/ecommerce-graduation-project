@@ -1,7 +1,7 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.services;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dto.LoginRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dto.RegisterRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.LoginRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Role;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
@@ -52,4 +52,5 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Invalid email or password");
         }
     }
+
 }
