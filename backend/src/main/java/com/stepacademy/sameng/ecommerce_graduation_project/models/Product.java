@@ -2,7 +2,15 @@ package com.stepacademy.sameng.ecommerce_graduation_project.models;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +36,8 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
+    @Column(nullable = false)
+    private Integer stock;
 
     @Column(name = "image_url")
     private String imageUrl;
