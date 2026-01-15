@@ -1,4 +1,4 @@
-package com.stepacademy.sameng.ecommerce_graduation_project.dtos;
+package com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth;
 
 public class ApiResponse {
 
