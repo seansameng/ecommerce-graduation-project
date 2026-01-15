@@ -1,5 +1,7 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.dtos.product;
 
+import lombok.Data;
+
 @Data
 public class ProductResponse {
     private int id;
