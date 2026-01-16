@@ -3,15 +3,13 @@ package com.stepacademy.sameng.ecommerce_graduation_project.controllers;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.ApiResponse;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.LoginRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.RegisterRequest;    
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.ApiResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.services.AuthService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
-
 
 @RestController
 @RequestMapping("/api/auth")
