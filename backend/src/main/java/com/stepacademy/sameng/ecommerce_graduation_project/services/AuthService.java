@@ -2,8 +2,8 @@ package com.stepacademy.sameng.ecommerce_graduation_project.services;
 
 import org.springframework.stereotype.Service;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.LoginRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.RegisterRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 
 @Service
 public interface AuthService {
