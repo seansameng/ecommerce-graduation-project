@@ -1,5 +1,11 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+
 public class ApiResponse {
 
     private boolean success;
