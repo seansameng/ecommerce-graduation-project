@@ -1,7 +1,5 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.dtos.product;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
