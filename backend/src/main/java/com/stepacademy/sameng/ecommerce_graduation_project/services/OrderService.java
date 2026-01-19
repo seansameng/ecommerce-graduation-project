@@ -2,7 +2,7 @@ package com.stepacademy.sameng.ecommerce_graduation_project.services;
 
 import java.util.List;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderCreateRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderResponse;
 
 public interface OrderService {
@@ -10,5 +10,5 @@ public interface OrderService {
 
     OrderResponse getById(Long id);
 
-    OrderResponse createOrder(OrderCreateRequest request);
+    OrderResponse createOrder(OrderRequest request);
 }
