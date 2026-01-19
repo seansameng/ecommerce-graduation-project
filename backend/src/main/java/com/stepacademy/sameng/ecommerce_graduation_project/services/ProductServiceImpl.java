@@ -35,8 +35,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse getById(int id) {
-        Product product = productRepository.findById((long) id)
+    public ProductResponse getById(Long id) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         return toResponse(product);
     }
@@ -47,12 +47,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(int id, ProductRequest productRequest) {
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void deleteProduct(int id) {
+    public void deleteProduct(Long id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
