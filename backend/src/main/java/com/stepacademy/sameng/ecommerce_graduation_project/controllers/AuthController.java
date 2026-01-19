@@ -1,6 +1,7 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.controllers;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.ApiResponse;
@@ -8,7 +9,7 @@ import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginReques
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.services.AuthService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +21,7 @@ public class AuthController {
 
     // AuthController implementation goes here
     @PostMapping("/login")
-    public ApiResponse login(@RequestBody LoginRequest loginRequest) {
+    public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         // Authentication logic goes here
         authService.login(loginRequest);
 
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ApiResponse register(@RequestBody RegisterRequest registerRequest) {
+    public ApiResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
         // Registration logic goes here
         authService.register(registerRequest);
         return ApiResponse.success("Registration successful", null);
