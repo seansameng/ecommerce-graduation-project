@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderCreateRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderItemRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderItemResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderResponse;
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponse createOrder(OrderCreateRequest request) {
+    public OrderResponse createOrder(OrderRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
