@@ -26,12 +26,12 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public ProductResponse updateProduct(@PathVariable int id, @RequestBody ProductRequest productRequest) {
+    public ProductResponse updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         return productService.updateProduct(id, productRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable int id) {
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 
