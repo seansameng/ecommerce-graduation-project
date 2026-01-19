@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderCreateRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.services.OrderService;
 
@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderResponse create(@Valid @RequestBody OrderCreateRequest request) {
+    public OrderResponse create(@Valid @RequestBody OrderRequest request) {
         return orderService.createOrder(request);
     }
 }
