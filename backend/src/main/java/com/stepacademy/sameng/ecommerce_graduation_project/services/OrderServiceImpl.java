@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderItem item : order.getItems()) {
             OrderItemResponse itemResponse = new OrderItemResponse();
             if (item.getProduct() != null) {
-                itemResponse.setProductId(Long.valueOf(item.getProduct().getId()));
+                itemResponse.setProductId(item.getProduct().getId());
                 itemResponse.setProductName(item.getProduct().getName());
                 itemResponse.setProductImageUrl(item.getProduct().getImageUrl());
             }
