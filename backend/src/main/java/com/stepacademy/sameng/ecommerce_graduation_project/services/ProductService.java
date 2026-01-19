@@ -8,12 +8,12 @@ import com.stepacademy.sameng.ecommerce_graduation_project.dtos.product.ProductR
 public interface ProductService {
     List<ProductResponse> getAll(String query, String category);
 
-    ProductResponse getById(int id);
+    ProductResponse getById(Long id);
 
     ProductResponse createProduct(ProductRequest productRequest);
 
-    ProductResponse updateProduct(int id, ProductRequest productRequest);
+    ProductResponse updateProduct(Long id, ProductRequest productRequest);
 
-    void deleteProduct(int id);
+    void deleteProduct(Long id);
 
 }
