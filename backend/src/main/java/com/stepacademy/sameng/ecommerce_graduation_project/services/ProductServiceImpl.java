@@ -8,11 +8,10 @@ import com.stepacademy.sameng.ecommerce_graduation_project.dtos.product.ProductR
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.product.ProductResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.ProductRepository;
 
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Builder
+
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
