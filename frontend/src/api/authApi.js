@@ -1,5 +1,6 @@
 import api from "./axios";
 
+
 export const register = (data) => {
     return api.post('/auth/register', data);
 };
@@ -10,6 +11,10 @@ export const login = async (data) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('role', role);
     return res.data;
+}
+export const saveAuth = (token, role) => {
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('role', role);
 }
 
 
