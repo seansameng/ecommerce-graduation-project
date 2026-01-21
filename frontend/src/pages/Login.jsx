@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { login as loginApi } from "../services/authService"; // adjust path
+import { login as loginApi } from "../api/authApi";
 import { FiMail, FiLock } from "react-icons/fi";
 import { motion } from "framer-motion";
 
