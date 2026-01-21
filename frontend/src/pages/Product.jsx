@@ -3,6 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import { Filter, Search, ShoppingCart } from "lucide-react";
 import { getProducts } from "../api/productApi";
 
+import { FiUser } from "react-icons/fi";
+
+
+
 const FALLBACK_IMAGE =
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
 
@@ -142,11 +146,10 @@ const Product = () => {
                                     key={cat}
                                     type="button"
                                     onClick={() => setSelectedCategory(cat)}
-                                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                                        active
-                                            ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow"
-                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    }`}
+                                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${active
+                                        ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow"
+                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        }`}
                                 >
                                     {cat === "all" ? "All" : cat}
                                 </button>
@@ -242,11 +245,10 @@ const Product = () => {
                                                 })
                                             }
                                             disabled={!inStock}
-                                            className={`mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${
-                                                inStock
-                                                    ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow hover:shadow-lg"
-                                                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
-                                            }`}
+                                            className={`mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${inStock
+                                                ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow hover:shadow-lg"
+                                                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                                                }`}
                                         >
                                             <ShoppingCart className="w-4 h-4" />
                                             Add to Cart
