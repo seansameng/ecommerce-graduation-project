@@ -33,8 +33,10 @@ const Register = () => {
 
     const validate = () => {
         const e = {};
+        const nameParts = formData.fullName.trim().split(/\s+/).filter(Boolean);
         if (!formData.fullName.trim()) e.fullName = "Full name is required";
         else if (formData.fullName.trim().length < 3) e.fullName = "Min 3 characters";
+        else if (nameParts.length < 2) e.fullName = "Enter first and last name";
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.email.trim()) e.email = "Email is required";
@@ -74,8 +76,13 @@ const Register = () => {
 
         setLoading(true);
         try {
+            const nameParts = formData.fullName.trim().split(/\s+/).filter(Boolean);
+            const firstName = nameParts[0] || "";
+            const lastName = nameParts.slice(1).join(" ");
+
             await api.post("/api/auth/register", {
-                fullName: formData.fullName,
+                firstName,
+                lastName,
                 email: formData.email,
                 password: formData.password,
             });
