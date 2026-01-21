@@ -9,13 +9,20 @@ const api = axios.create({
 });
 
 
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+api.interceptors.request.use(
+    (config) => {
+        const url = config?.url || "";
+        const isAuthRequest = url.startsWith("/auth/");
+        if (!isAuthRequest) {
+            const token = localStorage.getItem("authToken");
+            if (token) {
+                config.headers["Authorization"] = `Bearer ${token}`;
+            }
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
+);
 export default api;
