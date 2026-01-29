@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.ApiResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.AuthResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.services.AuthService;
@@ -22,10 +23,9 @@ public class AuthController {
     // AuthController implementation goes here
     @PostMapping("/login")
     public ApiResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        // Authentication logic goes here
-        authService.login(loginRequest);
+        AuthResponse response = authService.login(loginRequest);
 
-        return ApiResponse.success("Login successful", null);
+        return ApiResponse.success("Login successful", response);
     }
 
     @PostMapping("/register")
