@@ -3,11 +3,18 @@ package com.stepacademy.sameng.ecommerce_graduation_project.services;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.ApiResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.AuthResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.ApiException;
+import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.EmailAlreadyExistsException;
+import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.InvalidCredentialsException;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Role;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
+import com.stepacademy.sameng.ecommerce_graduation_project.security.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import lombok.Builder;
@@ -18,20 +25,21 @@ import lombok.Builder;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final JwtService jwtService;
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     @Override
     public void register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException();
         }
 
         User user = User.builder()
                 .email(request.getEmail())
-                .password(encoder.encode(request.getPassword()))
+                .password(request.getPassword())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .role(User.Role.CUSTOMER)
+                .role(Role.CUSTOMER)
                 .enabled(true)
                 .build();
 
@@ -40,13 +48,31 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
-
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+    public AuthResponse login(LoginRequest request) {
+        if (request.getEmail() == null) {
+            log.warn("Login attempt with null email");
+        } else {
+            log.info("Login attempt for email={}", request.getEmail());
         }
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> {
+                    log.warn("Login failed: user not found for email={}", request.getEmail());
+                    return new InvalidCredentialsException();
+                });
+
+        if (!request.getPassword().equals(user.getPassword())) {
+            log.warn("Login failed: password mismatch for email={}", request.getEmail());
+            throw new InvalidCredentialsException();
+        }
+
+        if (Boolean.FALSE.equals(user.getEnabled())) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Account is disabled");
+        }
+
+        String role = user.getRole().name();
+        String token = jwtService.generateToken(user.getId(), role);
+        return new AuthResponse(token, role);
     }
 
 }
