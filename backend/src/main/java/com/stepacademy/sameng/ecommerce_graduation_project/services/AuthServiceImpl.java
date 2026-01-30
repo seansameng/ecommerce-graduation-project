@@ -2,13 +2,13 @@ package com.stepacademy.sameng.ecommerce_graduation_project.services;
 
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.ApiResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.AuthResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.ApiException;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.EmailAlreadyExistsException;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.InvalidCredentialsException;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Role;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
+import com.stepacademy.sameng.ecommerce_graduation_project.models.UserStatus;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
 import com.stepacademy.sameng.ecommerce_graduation_project.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +37,10 @@ public class AuthServiceImpl implements AuthService {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .role(Role.CUSTOMER)
-                .enabled(true)
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .role(Role.USER)
+                .status(UserStatus.ACTIVE)
                 .build();
 
         userRepository.save(user);
@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialsException();
         }
 
-        if (Boolean.FALSE.equals(user.getEnabled())) {
+        if (user.getStatus() == UserStatus.BLOCKED) {
             throw new ApiException(HttpStatus.FORBIDDEN, "Account is disabled");
         }
 
