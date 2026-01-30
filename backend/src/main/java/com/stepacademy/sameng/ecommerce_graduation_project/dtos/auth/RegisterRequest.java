@@ -13,6 +13,10 @@ public class RegisterRequest {
     private String firstName;
     @NotBlank(message = "Last Name is required")
     private String lastName;
+    @NotBlank(message = "Full Name is required")
+    private String fullName;
+
+    private String phoneNumber;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email is Invalid")
