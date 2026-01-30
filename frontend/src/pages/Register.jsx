@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { motion } from "framer-motion";
-import api from "../api/api";
+import { register as registerApi } from "../api/authApi";
 
 
 
@@ -80,7 +80,7 @@ const Register = () => {
             const firstName = nameParts[0] || "";
             const lastName = nameParts.slice(1).join(" ");
 
-            await api.post("/api/auth/register", {
+            await registerApi({
                 firstName,
                 lastName,
                 email: formData.email,
