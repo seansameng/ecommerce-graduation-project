@@ -47,7 +47,11 @@ const Product = () => {
             .catch((err) => {
                 if (ignore) return;
                 setStatus("error");
-                setError(err?.response?.data?.message || "Failed to load products.");
+                setError(
+                    err?.response?.data?.message ||
+                    err?.message ||
+                    "Failed to load products."
+                );
             });
 
         return () => {
