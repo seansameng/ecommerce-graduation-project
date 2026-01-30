@@ -46,9 +46,14 @@ public class User {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.CUSTOMER;
-
+    private Role role = Role.USER;
+    @Column(nullable = false)
     private Boolean enabled = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+
+    private UserStatus status = UserStatus.ACTIVE;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
@@ -86,8 +91,7 @@ public class User {
         return role;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
+    public UserStatus getStatus() {
+        return status;
     }
-
 }
