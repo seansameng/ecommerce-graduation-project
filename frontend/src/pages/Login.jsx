@@ -39,9 +39,12 @@ const Login = () => {
 
         setLoading(true);
         try {
-            await loginApi(formData);
-
-            const redirectTo = location.state?.from?.pathname || "/products";
+            const payload = await loginApi(formData);
+            const role = payload?.data?.role || localStorage.getItem("role");
+            const redirectTo =
+                role === "ADMIN"
+                    ? "/admin"
+                    : (location.state?.from?.pathname || "/products");
             navigate(redirectTo, { replace: true });
         } catch (err) {
             const msg =
