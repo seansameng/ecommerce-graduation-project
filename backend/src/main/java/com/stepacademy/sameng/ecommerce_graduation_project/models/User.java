@@ -66,10 +66,6 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public enum Role {
-        CUSTOMER, VENDOR, ADMIN
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
