@@ -1,54 +1,99 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.models;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "addresses")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "street_address", nullable = false)
-    private String streetAddress;
+    // ================= ADDRESS DETAILS =================
+    @Column(nullable = false)
+    private String addressLine; // house / street / village
 
     @Column(nullable = false)
-    private String city;
+    private String city; // district / city
 
     @Column(nullable = false)
-    private String state;
-
-    @Column(name = "postal_code", nullable = false)
-    private String postalCode;
+    private String province; // province
 
     @Column(nullable = false)
-    private String country;
+    private String country = "Cambodia";
 
-    @ManyToOne
+    // ================= RELATION =================
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    // ================= DEFAULT ADDRESS =================
+    @Column(nullable = false)
+    private boolean isDefault = false;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    // ================= CONSTRUCTORS =================
+    public Address() {
+    }
+
+    // ================= GETTERS & SETTERS =================
+    public Long getId() {
+        return id;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
 }
