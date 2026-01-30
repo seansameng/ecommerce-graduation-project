@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -13,11 +14,12 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "your-256-bit-secret";
+    @Value("${jwt.secret}")
+    private String secret;
     private static final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
 
     private Key key() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
     }
 
@@ -25,6 +27,17 @@ public class JwtService {
         long now = System.currentTimeMillis();
         return io.jsonwebtoken.Jwts.builder()
                 .setSubject(subject)
+                .setIssuedAt(new java.util.Date(now))
+                .setExpiration(new java.util.Date(now + EXPIRATION_TIME))
+                .signWith(key())
+                .compact();
+    }
+
+    public String generateToken(long userId, String role) {
+        long now = System.currentTimeMillis();
+        return io.jsonwebtoken.Jwts.builder()
+                .setSubject(Long.toString(userId))
+                .claim("role", role)
                 .setIssuedAt(new java.util.Date(now))
                 .setExpiration(new java.util.Date(now + EXPIRATION_TIME))
                 .signWith(key())
