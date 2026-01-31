@@ -9,13 +9,10 @@ import lombok.Data;
 
 public class RegisterRequest {
 
-    @NotBlank(message = "First Name is required")
-    private String firstName;
-    @NotBlank(message = "Last Name is required")
     private String lastName;
     @NotBlank(message = "Full Name is required")
     private String fullName;
-
+    @NotBlank(message = "Phone Number is required")
     private String phoneNumber;
 
     @NotBlank(message = "Email is required")
