@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiPhone } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { register as registerApi } from "../api/authApi";
-
-
-
 
 const Register = () => {
     const navigate = useNavigate();
@@ -19,6 +16,7 @@ const Register = () => {
 
     const [formData, setFormData] = useState({
         fullName: "",
+        phoneNumber: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -27,28 +25,37 @@ const Register = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((p) => ({ ...p, [name]: value }));
+
         if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
         if (serverError) setServerError("");
     };
 
     const validate = () => {
         const e = {};
-        const nameParts = formData.fullName.trim().split(/\s+/).filter(Boolean);
+
+        // Full name
         if (!formData.fullName.trim()) e.fullName = "Full name is required";
         else if (formData.fullName.trim().length < 3) e.fullName = "Min 3 characters";
-        else if (nameParts.length < 2) e.fullName = "Enter first and last name";
 
+        // Phone number (optional)
+        if (formData.phoneNumber.trim() && !/^[0-9]{8,15}$/.test(formData.phoneNumber.trim()))
+            e.phoneNumber = "Phone number must be 8-15 digits";
+
+        // Email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formData.email.trim()) e.email = "Email is required";
-        else if (!emailRegex.test(formData.email)) e.email = "Invalid email";
+        else if (!emailRegex.test(formData.email.trim())) e.email = "Invalid email";
 
+        // Password
         if (!formData.password) e.password = "Password is required";
-        else if (formData.password.length < 8) e.password = "Min 8 characters";
+        else if (formData.password.length < 6) e.password = "Min 6 characters";
 
+        // Confirm password
         if (!formData.confirmPassword) e.confirmPassword = "Confirm your password";
         else if (formData.password !== formData.confirmPassword)
             e.confirmPassword = "Passwords do not match";
 
+        // Agree
         if (!agree) e.agree = "Accept Terms & Privacy";
 
         setErrors(e);
@@ -59,8 +66,8 @@ const Register = () => {
     const extractServerMessage = (data) => {
         if (!data) return "Registration failed";
         if (typeof data.message === "string") return data.message;
-        // common patterns:
-        // {errors: {field: msg}} or {errors: ["..."]}
+
+        // common patterns: {errors: {field: msg}} or {errors: ["..."]}
         if (data.errors && typeof data.errors === "object") {
             const firstKey = Object.keys(data.errors)[0];
             if (firstKey) return data.errors[firstKey];
@@ -76,18 +83,13 @@ const Register = () => {
 
         setLoading(true);
         try {
-            const nameParts = formData.fullName.trim().split(/\s+/).filter(Boolean);
-            const firstName = nameParts[0] || "";
-            const lastName = nameParts.slice(1).join(" ");
-
             await registerApi({
-                firstName,
-                lastName,
-                email: formData.email,
+                fullName: formData.fullName.trim(),
+                phoneNumber: formData.phoneNumber.trim(),
+                email: formData.email.trim(),
                 password: formData.password,
             });
 
-            // success
             navigate("/login", { state: { registered: true } });
         } catch (err) {
             const data = err?.response?.data;
@@ -124,10 +126,37 @@ const Register = () => {
                                     onChange={handleChange}
                                     placeholder="Enter your full name"
                                     className={`w-full rounded-xl border px-10 py-3 outline-none transition
-                    ${errors.fullName ? "border-red-400 focus:ring-2 focus:ring-red-200" : "border-gray-200 focus:ring-2 focus:ring-emerald-200"}`}
+                    ${errors.fullName
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-200"
+                                            : "border-gray-200 focus:ring-2 focus:ring-emerald-200"
+                                        }`}
                                 />
                             </div>
                             {errors.fullName && <p className="mt-2 text-sm text-red-600">{errors.fullName}</p>}
+                        </div>
+
+                        {/* Phone Number */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-800 mb-2">Phone Number</label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <FiPhone />
+                                </span>
+                                <input
+                                    name="phoneNumber"
+                                    value={formData.phoneNumber}
+                                    onChange={handleChange}
+                                    placeholder="Optional (8-15 digits)"
+                                    className={`w-full rounded-xl border px-10 py-3 outline-none transition
+                    ${errors.phoneNumber
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-200"
+                                            : "border-gray-200 focus:ring-2 focus:ring-emerald-200"
+                                        }`}
+                                />
+                            </div>
+                            {errors.phoneNumber && (
+                                <p className="mt-2 text-sm text-red-600">{errors.phoneNumber}</p>
+                            )}
                         </div>
 
                         {/* Email */}
@@ -144,7 +173,10 @@ const Register = () => {
                                     onChange={handleChange}
                                     placeholder="name@example.com"
                                     className={`w-full rounded-xl border px-10 py-3 outline-none transition
-                    ${errors.email ? "border-red-400 focus:ring-2 focus:ring-red-200" : "border-gray-200 focus:ring-2 focus:ring-emerald-200"}`}
+                    ${errors.email
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-200"
+                                            : "border-gray-200 focus:ring-2 focus:ring-emerald-200"
+                                        }`}
                                 />
                             </div>
                             {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
@@ -162,9 +194,12 @@ const Register = () => {
                                     type={showPassword ? "text" : "password"}
                                     value={formData.password}
                                     onChange={handleChange}
-                                    placeholder="Min. 8 characters"
+                                    placeholder="Min. 6 characters"
                                     className={`w-full rounded-xl border px-10 py-3 pr-12 outline-none transition
-                    ${errors.password ? "border-red-400 focus:ring-2 focus:ring-red-200" : "border-gray-200 focus:ring-2 focus:ring-emerald-200"}`}
+                    ${errors.password
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-200"
+                                            : "border-gray-200 focus:ring-2 focus:ring-emerald-200"
+                                        }`}
                                 />
                                 <button
                                     type="button"
@@ -191,7 +226,10 @@ const Register = () => {
                                     onChange={handleChange}
                                     placeholder="Confirm your password"
                                     className={`w-full rounded-xl border px-10 py-3 outline-none transition
-                    ${errors.confirmPassword ? "border-red-400 focus:ring-2 focus:ring-red-200" : "border-gray-200 focus:ring-2 focus:ring-emerald-200"}`}
+                    ${errors.confirmPassword
+                                            ? "border-red-400 focus:ring-2 focus:ring-red-200"
+                                            : "border-gray-200 focus:ring-2 focus:ring-emerald-200"
+                                        }`}
                                 />
                             </div>
                             {errors.confirmPassword && (
