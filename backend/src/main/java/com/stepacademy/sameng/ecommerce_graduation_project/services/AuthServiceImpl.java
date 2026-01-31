@@ -1,8 +1,13 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.services;
 
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.AuthResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.LoginRequest;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.auth.RegisterRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.ApiException;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.EmailAlreadyExistsException;
 import com.stepacademy.sameng.ecommerce_graduation_project.exceptions.InvalidCredentialsException;
@@ -11,13 +16,9 @@ import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.UserStatus;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
 import com.stepacademy.sameng.ecommerce_graduation_project.security.JwtService;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +36,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = User.builder()
-                .email(request.getEmail())
-                .password(request.getPassword())
                 .fullName(request.getFullName())
                 .phoneNumber(request.getPhoneNumber())
-                .role(Role.USER)
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .enabled(true)
+                .role(Role.ADMIN)
                 .status(UserStatus.ACTIVE)
                 .build();
 
