@@ -1,5 +1,9 @@
 package com.stepacademy.sameng.ecommerce_graduation_project.models;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,13 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,17 +46,20 @@ public class User {
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private Role role = Role.USER;
     @Column(nullable = false)
-    private Boolean enabled = true;
+    @Builder.Default
+    private Boolean enabled = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-
+    @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
@@ -70,6 +73,9 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
+        if (enabled == null) {
+            enabled = true;
+        }
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
@@ -93,5 +99,19 @@ public class User {
 
     public UserStatus getStatus() {
         return status;
+    }
+
+    public void addOrder(Order order) {
+        if (order == null)
+            return;
+        orders.add(order);
+        order.setUser(this);
+    }
+
+    public void removeOrder(Order order) {
+        if (order == null)
+            return;
+        orders.remove(order);
+        order.setUser(null);
     }
 }
