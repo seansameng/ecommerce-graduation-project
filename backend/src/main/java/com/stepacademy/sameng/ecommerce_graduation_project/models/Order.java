@@ -19,21 +19,26 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import ch.qos.logback.core.status.Status;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "orders")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "orders", uniqueConstraints = @UniqueConstraint(columnNames = "order_code"))
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "order_code", nullable = false, unique = true, length = 50)
+    private String orderCode;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -57,9 +62,11 @@ public class Order {
     private OrderStatus status = OrderStatus.PENDING;
 
     @Column(nullable = false, precision = 12, scale = 2)
+    @Builder.Default
     private BigDecimal subtotal = BigDecimal.ZERO;
 
     @Column(nullable = false, precision = 12, scale = 2)
+    @Builder.Default
     private BigDecimal total = BigDecimal.ZERO;
 
     @Column(nullable = false, updatable = false)
