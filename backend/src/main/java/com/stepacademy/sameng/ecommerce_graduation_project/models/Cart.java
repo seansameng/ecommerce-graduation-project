@@ -2,7 +2,6 @@ package com.stepacademy.sameng.ecommerce_graduation_project.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import com.stripe.model.billingportal.Session;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,12 +16,14 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "carts")
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Cart {
     @Id
@@ -52,14 +53,6 @@ public class Cart {
     @PreUpdate
     void PreUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    // gettters and setters
-    public Cart(Long id, User user, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.user = user;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public long getid() {
