@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import AdminLayout from "../../components/AdminLayout";
 import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiImage } from "react-icons/fi";
 import {
     getProducts,
@@ -16,7 +15,7 @@ const emptyProduct = {
     sku: "",
     category: categories[0],
     price: "",
-    stockQty: "",
+    stock: "",
     status: "ACTIVE", // ACTIVE | DRAFT
     imageUrl: "",
     description: "",
@@ -84,10 +83,18 @@ export default function AdminProducts() {
         if (sort === "newest") list.sort((a, b) => (b.id || 0) - (a.id || 0));
         if (sort === "price_asc") list.sort((a, b) => (a.price || 0) - (b.price || 0));
         if (sort === "price_desc") list.sort((a, b) => (b.price || 0) - (a.price || 0));
-        if (sort === "stock") list.sort((a, b) => (b.stockQty || b.stock || 0) - (a.stockQty || a.stock || 0));
+        if (sort === "stock")
+            list.sort(
+                (a, b) =>
+                    (b.stock || 0) - (a.stock || 0)
+            );
 
         return list;
     }, [items, q, cat, status, sort]);
+
+    const totalUnits = useMemo(() => {
+        return filtered.reduce((sum, p) => sum + Number(p.stock || 0), 0);
+    }, [filtered]);
 
     const openCreate = () => {
         setMode("create");
@@ -105,7 +112,7 @@ export default function AdminProducts() {
             sku: p.sku || "",
             category: p.category || categories[0],
             price: String(p.price ?? ""),
-            stockQty: String(p.stockQty ?? p.stock ?? ""),
+            stock: String(p.stock ?? ""),
             status: p.status || "ACTIVE",
             imageUrl: p.imageUrl || "",
             description: p.description || "",
@@ -130,7 +137,7 @@ export default function AdminProducts() {
         if (!form.sku.trim()) return "SKU is required";
         const price = Number(form.price);
         if (Number.isNaN(price) || price < 0) return "Price must be a valid number";
-        const stock = Number(form.stockQty);
+        const stock = Number(form.stock);
         if (Number.isNaN(stock) || stock < 0) return "Stock must be 0 or more";
         return "";
     };
@@ -140,7 +147,7 @@ export default function AdminProducts() {
         sku: form.sku.trim(),
         category: form.category,
         price: Number(form.price),
-        stockQty: Number(form.stockQty),
+        stock: Number(form.stock),
         status: form.status,
         imageUrl: form.imageUrl?.trim() || null,
         description: form.description?.trim() || null,
@@ -161,7 +168,6 @@ export default function AdminProducts() {
 
             if (mode === "create") {
                 const res = await createProduct(payload);
-                // If backend returns created product, push it. Otherwise refresh.
                 if (res?.data) setItems((prev) => [res.data, ...prev]);
                 else await fetchProducts();
             } else {
@@ -169,7 +175,9 @@ export default function AdminProducts() {
                 if (res?.data) {
                     setItems((prev) => prev.map((x) => (x.id === form.id ? res.data : x)));
                 } else {
-                    setItems((prev) => prev.map((x) => (x.id === form.id ? { ...x, ...payload } : x)));
+                    setItems((prev) =>
+                        prev.map((x) => (x.id === form.id ? { ...x, ...payload } : x))
+                    );
                 }
             }
 
@@ -197,7 +205,7 @@ export default function AdminProducts() {
     };
 
     return (
-        <AdminLayout title="Product Management">
+        <>
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
@@ -286,8 +294,8 @@ export default function AdminProducts() {
                         </select>
 
                         <div className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 flex items-center">
-                            <span className="font-semibold">{filtered.length}</span>
-                            <span className="ml-2 text-gray-500">items</span>
+                            <span className="font-semibold">{totalUnits}</span>
+                            <span className="ml-2 text-gray-500">units</span>
                         </div>
                     </div>
 
@@ -310,7 +318,7 @@ export default function AdminProducts() {
                                 <tbody>
                                     {filtered.map((p) => {
                                         const name = p.name || p.productName || "";
-                                        const stock = p.stockQty ?? p.stock ?? 0;
+                                        const stock = p.stock ?? 0;
 
                                         return (
                                             <tr key={p.id} className="border-b border-gray-100 last:border-0">
@@ -328,7 +336,9 @@ export default function AdminProducts() {
 
                                                 <td className="px-5 py-4 text-gray-700">{p.sku}</td>
                                                 <td className="px-5 py-4 text-gray-700">{p.category}</td>
-                                                <td className="px-5 py-4 text-gray-700">${Number(p.price || 0).toFixed(2)}</td>
+                                                <td className="px-5 py-4 text-gray-700">
+                                                    ${Number(p.price || 0).toFixed(2)}
+                                                </td>
 
                                                 <td className="px-5 py-4">
                                                     <span
@@ -464,8 +474,8 @@ export default function AdminProducts() {
                                     <div>
                                         <label className="text-sm font-bold text-gray-700">Stock</label>
                                         <input
-                                            name="stockQty"
-                                            value={form.stockQty}
+                                            name="stock"
+                                            value={form.stock}
                                             onChange={onChange}
                                             className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
                                             placeholder="14"
@@ -529,6 +539,6 @@ export default function AdminProducts() {
                     </div>
                 </div>
             )}
-        </AdminLayout>
+        </>
     );
 }
