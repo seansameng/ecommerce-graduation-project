@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
-import { Search } from "lucide-react";
-
-
 const categories = [
   {
     name: "Phones",
@@ -154,8 +151,22 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/85 backdrop-blur">
+    <div
+      className="min-h-screen bg-[#f7f4ee] text-slate-900"
+      style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
+    >
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatSlow {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+      `}</style>
+      <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex items-center justify-between py-3">
             <Link to="/" className="flex items-center gap-2">
@@ -224,24 +235,21 @@ export default function Home() {
       </header>
 
       <main className="mx-auto max-w-6xl px-4">
-        <section className="pt-6">
-          <div className="relative overflow-hidden rounded-3xl bg-slate-900">
-            <img
-              src="https://images.unsplash.com/photo-1520975661595-6453be3f7070?auto=format&fit=crop&w=1600&q=60"
-              alt="hero"
-              className="h-[360px] w-full object-cover opacity-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full px-8 md:px-12">
+        <section className="pt-8">
+          <div className="relative overflow-hidden rounded-[32px] bg-[#0f172a]">
+            <div className="absolute -left-10 -top-16 h-48 w-48 rounded-full bg-emerald-400/40 blur-3xl" />
+            <div className="absolute right-0 top-10 h-56 w-56 rounded-full bg-amber-300/30 blur-3xl" />
+            <div className="grid gap-8 px-6 py-10 md:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div style={{ animation: "fadeUp 0.6s ease-out both" }}>
                 <div className="mb-4">
                   <Badge>TECH WEEK SALE</Badge>
                 </div>
                 <h1 className="max-w-xl text-4xl font-extrabold leading-tight text-white md:text-5xl">
-                  Next-Gen Tech <br /> Is Here
+                  Next‑Gen Tech <br /> Feels Effortless
                 </h1>
                 <p className="mt-4 max-w-lg text-sm text-white/85 md:text-base">
-                  Upgrade your digital life with the latest smartphones, powerful laptops, and premium accessories.
+                  Curated devices and accessories that balance performance, design, and price — built for everyday
+                  momentum.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
@@ -252,10 +260,49 @@ export default function Home() {
                   </Link>
                   <Link
                     to="/categories"
-                    className="inline-flex items-center justify-center rounded-xl bg-white/15 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/25 hover:bg-white/20"
+                    className="inline-flex items-center justify-center rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/20 hover:bg-white/20"
                   >
                     View Categories
                   </Link>
+                </div>
+                <div className="mt-8 flex flex-wrap gap-3 text-xs text-white/70">
+                  <span className="rounded-full border border-white/20 px-3 py-1">Fast shipping</span>
+                  <span className="rounded-full border border-white/20 px-3 py-1">Easy returns</span>
+                  <span className="rounded-full border border-white/20 px-3 py-1">Official warranty</span>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div
+                  className="absolute -left-6 -top-6 h-16 w-16 rounded-2xl bg-white/10 blur-md"
+                  style={{ animation: "floatSlow 5s ease-in-out infinite" }}
+                />
+                <div className="rounded-3xl bg-white/8 p-4 ring-1 ring-white/15">
+                  <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">
+                    Editor’s picks
+                  </div>
+                  <div className="mt-4 space-y-4">
+                    {featuredDeals.slice(0, 2).map((deal) => (
+                      <div
+                        key={deal.name}
+                        className="flex items-center gap-4 rounded-2xl bg-white/10 p-3 ring-1 ring-white/10"
+                      >
+                        <img
+                          src={deal.img}
+                          alt={deal.name}
+                          className="h-16 w-20 rounded-xl object-cover"
+                          loading="lazy"
+                        />
+                        <div>
+                          <div className="text-xs font-semibold text-white/60">{deal.category}</div>
+                          <div className="text-sm font-extrabold text-white">{deal.name}</div>
+                          <div className="mt-1 text-sm font-bold text-emerald-300">
+                            ${deal.price.toFixed(2)}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,7 +316,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-10">
+        <section className="mt-12">
           <div className="flex items-end justify-between">
             <h2 className="text-xl font-extrabold tracking-tight">Shop by Category</h2>
             <Link to="/categories" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
@@ -301,7 +348,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-10">
+        <section className="mt-12">
           <h2 className="text-xl font-extrabold tracking-tight">Featured Deals</h2>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
