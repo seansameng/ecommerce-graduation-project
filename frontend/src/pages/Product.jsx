@@ -3,10 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { Filter, Search, ShoppingCart } from "lucide-react";
 import { getProducts } from "../api/productApi";
 
-import { FiUser } from "react-icons/fi";
-
-
-
 const FALLBACK_IMAGE =
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
 
@@ -90,24 +86,27 @@ const Product = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
-            <section className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 py-10">
+        <div
+            className="min-h-screen bg-[#f7f4ee] text-slate-900"
+            style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
+        >
+            <section className="border-b border-slate-200/60 bg-white">
+                <div className="max-w-7xl mx-auto px-4 py-12">
                     <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <div className="text-sm uppercase tracking-[0.3em] text-teal-600 font-semibold mb-3">
-                                Curated Tech
-                            </div>
-                            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3">
+                            {/* <div className="text-xs uppercase tracking-[0.4em] text-emerald-600 font-semibold mb-3">
+                                Curated tech
+                            </div> */}
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-3">
                                 Product Collection
                             </h1>
-                            <p className="text-gray-600 max-w-2xl">
+                            <p className="text-slate-600 max-w-2xl">
                                 Browse the latest arrivals and best sellers. Filter by category or search by name.
                             </p>
                         </div>
                         <Link
                             to="/"
-                            className="inline-flex items-center gap-2 text-teal-600 font-bold hover:text-teal-700"
+                            className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700"
                         >
                             Back to Home
                         </Link>
@@ -115,28 +114,28 @@ const Product = () => {
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto px-4 py-8">
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <section className="max-w-7xl mx-auto px-4 py-4 sticky top-0 z-20">
+                <div className="bg-white/90 backdrop-blur rounded-3xl border border-slate-200/70 shadow-sm p-6">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <form onSubmit={onSearchSubmit} className="flex w-full lg:max-w-xl gap-3">
                             <div className="relative flex-1">
-                                <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                                <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
                                 <input
                                     value={searchInput}
                                     onChange={(event) => setSearchInput(event.target.value)}
                                     placeholder="Search products by name"
-                                    className="w-full border border-gray-200 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    className="w-full border border-slate-200 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="px-5 py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition-colors"
+                                className="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
                             >
                                 Search
                             </button>
                         </form>
 
-                        <div className="flex items-center gap-2 text-gray-500 text-sm">
+                        <div className="flex items-center gap-2 text-slate-500 text-sm">
                             <Filter className="w-4 h-4" />
                             <span>{products.length} items</span>
                         </div>
@@ -151,8 +150,8 @@ const Product = () => {
                                     type="button"
                                     onClick={() => setSelectedCategory(cat)}
                                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${active
-                                        ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow"
+                                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                                         }`}
                                 >
                                     {cat === "all" ? "All" : cat}
@@ -169,14 +168,14 @@ const Product = () => {
                         {Array.from({ length: 8 }).map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
+                                className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden animate-pulse"
                             >
-                                <div className="aspect-square bg-gray-100" />
+                                <div className="aspect-square bg-slate-100" />
                                 <div className="p-5 space-y-3">
-                                    <div className="h-4 bg-gray-100 rounded w-2/3" />
-                                    <div className="h-5 bg-gray-100 rounded w-3/4" />
-                                    <div className="h-6 bg-gray-100 rounded w-1/3" />
-                                    <div className="h-10 bg-gray-100 rounded" />
+                                    <div className="h-4 bg-slate-100 rounded w-2/3" />
+                                    <div className="h-5 bg-slate-100 rounded w-3/4" />
+                                    <div className="h-6 bg-slate-100 rounded w-1/3" />
+                                    <div className="h-10 bg-slate-100 rounded" />
                                 </div>
                             </div>
                         ))}
@@ -190,7 +189,7 @@ const Product = () => {
                 )}
 
                 {status === "success" && products.length === 0 && (
-                    <div className="bg-white border border-gray-100 rounded-2xl p-10 text-center text-gray-600">
+                    <div className="bg-white border border-slate-200/70 rounded-2xl p-10 text-center text-slate-600">
                         No products found. Try adjusting your search or category filter.
                     </div>
                 )}
@@ -203,37 +202,37 @@ const Product = () => {
                             return (
                                 <div
                                     key={product.id}
-                                    className="group bg-white rounded-2xl border border-gray-100 hover:border-teal-200 hover:shadow-2xl transition-all overflow-hidden"
+                                    className="group bg-white rounded-2xl border border-slate-200/70 hover:border-emerald-200 hover:shadow-2xl transition-all overflow-hidden"
                                 >
-                                    <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                                    <div className="relative aspect-square bg-slate-50 overflow-hidden">
                                         <img
                                             src={product.imageUrl || FALLBACK_IMAGE}
                                             alt={product.name}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
                                         {!inStock && (
-                                            <span className="absolute top-4 left-4 bg-gray-900/80 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                            <span className="absolute top-4 left-4 bg-slate-900/80 text-white text-xs font-semibold px-3 py-1 rounded-full">
                                                 Out of Stock
                                             </span>
                                         )}
                                     </div>
 
                                     <div className="p-5">
-                                        <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                                             {product.category || "Uncategorized"}
                                         </p>
-                                        <h3 className="font-bold text-gray-900 mt-2 mb-3 text-lg leading-snug">
+                                        <h3 className="font-bold text-slate-900 mt-2 mb-3 text-lg leading-snug">
                                             {product.name}
                                         </h3>
-                                        <p className="text-sm text-gray-600 min-h-[2.5rem]">
+                                        <p className="text-sm text-slate-600 min-h-[2.5rem]">
                                             {product.description || "No description available."}
                                         </p>
 
                                         <div className="flex items-center justify-between mt-4">
-                                            <span className="text-2xl font-extrabold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                                            <span className="text-2xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                                                 ${price.toFixed(2)}
                                             </span>
-                                            <span className="text-xs text-gray-500">
+                                            <span className="text-xs text-slate-500">
                                                 {inStock ? `${product.stock} in stock` : "Notify me"}
                                             </span>
                                         </div>
@@ -250,8 +249,8 @@ const Product = () => {
                                             }
                                             disabled={!inStock}
                                             className={`mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${inStock
-                                                ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow hover:shadow-lg"
-                                                : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                                                ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow hover:shadow-lg"
+                                                : "bg-slate-200 text-slate-500 cursor-not-allowed"
                                                 }`}
                                         >
                                             <ShoppingCart className="w-4 h-4" />
