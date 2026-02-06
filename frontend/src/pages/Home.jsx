@@ -2,8 +2,8 @@
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
 
-// import HeroSection from "../components/hero/HeroSection.jsx";
-// import InfoPills from "../components/hero/InfoPills.jsx";
+import HeroSection from "../components/hero/HeroSection.jsx";
+import InfoPills from "../components/hero/InfoPills.jsx";
 import CategorySection from "../components/category/CategorySection.jsx";
 import FeaturedDealsSection from "../components/product/FeaturedDealsSection.jsx";
 import RecentlyViewedSection from "../components/recent/RecentlyViewedSection.jsx";
@@ -21,8 +21,8 @@ export default function Home() {
       <Navbar q={q} setQ={setQ} cartCount={3} brand={{ name: "ShopEase", href: "/" }} />
 
       <main className="mx-auto max-w-6xl px-4">
-        {/* <HeroSection featuredDeals={featuredDeals} /> */}
-        {/* <InfoPills /> */}
+        <HeroSection featuredDeals={featuredDeals} />
+        <InfoPills />
         <CategorySection categories={categories} />
         <FeaturedDealsSection featuredDeals={featuredDeals} />
         <RecentlyViewedSection recentlyViewed={recentlyViewed} />
