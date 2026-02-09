@@ -3,6 +3,7 @@ package com.stepacademy.sameng.ecommerce_graduation_project.services;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = Order.builder()
                 .user(user)
+                .orderCode(generateOrderCode())
                 .customerName(valueOrFallback(request.getCustomerName(), user.getFullName()))
                 .customerEmail(valueOrFallback(request.getCustomerEmail(), user.getEmail()))
                 .customerPhone(valueOrFallback(request.getCustomerPhone(), user.getPhoneNumber()))
@@ -128,6 +130,10 @@ public class OrderServiceImpl implements OrderService {
             return BigDecimal.ZERO;
         }
         return BigDecimal.valueOf(value);
+    }
+
+    private static String generateOrderCode() {
+        return UUID.randomUUID().toString().replace("-", "").toUpperCase();
     }
 
     private static String valueOrFallback(String value, String fallback) {
