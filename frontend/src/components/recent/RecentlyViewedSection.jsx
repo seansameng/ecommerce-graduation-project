@@ -25,7 +25,7 @@ export default function RecentlyViewedSection({ recentlyViewed = [] }) {
 
       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
         {recentlyViewed.map((p) => (
-          <Card key={p.name} img={p.img}>
+          <Card key={p.id ?? p.name} img={p.img || p.imageUrl}>
             <div className="font-extrabold text-sm">{p.name}</div>
             <div className="mt-2 text-sm font-bold text-emerald-600">${Number(p.price || 0).toFixed(2)}</div>
           </Card>
