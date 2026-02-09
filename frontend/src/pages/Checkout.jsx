@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import useCart from "../hooks/useCart";
+import { createOrder } from "../api/orderApi";
+import { getUserIdFromToken } from "../utils/jwt";
 
 const money = (n) => `$${Number(n || 0).toFixed(2)}`;
 
@@ -10,16 +12,83 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const { items, cartCount, subtotal, clearCart } = useCart();
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const shipping = subtotal > 0 ? 5 : 0;
   const tax = subtotal > 0 ? subtotal * 0.05 : 0;
   const total = subtotal + shipping + tax;
 
-  const handlePlaceOrder = (event) => {
+  const handlePlaceOrder = async (event) => {
     event.preventDefault();
     if (items.length === 0) return;
-    clearCart();
-    navigate("/");
+
+    setError("");
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login", { replace: true, state: { from: { pathname: "/checkout" } } });
+      return;
+    }
+
+    const userId = getUserIdFromToken(token);
+    if (!userId) {
+      setError("Could not read user id from your session. Please log in again.");
+      return;
+    }
+
+    // Extract form inputs without converting the whole form to controlled inputs.
+    const fd = new FormData(event.currentTarget);
+    const firstName = String(fd.get("firstName") || "").trim();
+    const lastName = String(fd.get("lastName") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    const phone = String(fd.get("phone") || "").trim();
+    const address = String(fd.get("address") || "").trim();
+    const city = String(fd.get("city") || "").trim();
+    const state = String(fd.get("state") || "").trim();
+    const postalCode = String(fd.get("postalCode") || "").trim();
+
+    const shippingAddress = [address, city, state, postalCode].filter(Boolean).join(", ");
+
+    const orderItems = items.map((it) => ({
+      productId: Number(it.id),
+      quantity: Number(it.qty || 1),
+    }));
+
+    if (orderItems.some((x) => !Number.isFinite(x.productId))) {
+      setError("One or more cart items are missing a valid product id. Please remove them and try again.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        userId,
+        customerName: `${firstName} ${lastName}`.trim(),
+        customerEmail: email,
+        customerPhone: phone || null,
+        shippingAddress,
+        items: orderItems,
+      };
+
+      const res = await createOrder(payload);
+      const created = res?.data;
+
+      clearCart();
+      if (created?.id != null) {
+        navigate(`/order-success/${created.id}`);
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Failed to place order. Please try again.";
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -64,23 +133,31 @@ export default function Checkout() {
               onSubmit={handlePlaceOrder}
               className="rounded-3xl bg-white p-6 ring-1 ring-slate-100"
             >
+              {error && (
+                <div className="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-800">
+                  {error}
+                </div>
+              )}
               <div className="space-y-6">
                 <div>
                   <h2 className="text-lg font-extrabold">Contact</h2>
                   <div className="mt-4 grid gap-4 sm:grid-cols-2">
                     <input
                       required
+                      name="firstName"
                       placeholder="First name"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <input
                       required
+                      name="lastName"
                       placeholder="Last name"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <input
                       required
                       type="email"
+                      name="email"
                       placeholder="Email address"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:col-span-2"
                     />
@@ -92,26 +169,31 @@ export default function Checkout() {
                   <div className="mt-4 grid gap-4 sm:grid-cols-2">
                     <input
                       required
+                      name="address"
                       placeholder="Address"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:col-span-2"
                     />
                     <input
                       required
+                      name="city"
                       placeholder="City"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <input
                       required
+                      name="state"
                       placeholder="State"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <input
                       required
+                      name="postalCode"
                       placeholder="Postal code"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                     <input
                       required
+                      name="phone"
                       placeholder="Phone"
                       className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
@@ -147,9 +229,10 @@ export default function Checkout() {
 
               <button
                 type="submit"
+                disabled={submitting}
                 className="mt-8 w-full rounded-xl bg-emerald-500 px-4 py-3 text-sm font-extrabold text-white hover:bg-emerald-600"
               >
-                Place Order
+                {submitting ? "Placing Order..." : "Place Order"}
               </button>
             </form>
 
