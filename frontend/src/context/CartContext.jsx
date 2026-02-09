@@ -57,6 +57,24 @@ export const CartProvider = ({ children }) => {
         );
     };
 
+    const incQty = (id, by = 1) => {
+        const step = Math.max(1, Number(by || 1));
+        setItems((prev) =>
+            prev.map((x) => (x.id === id ? { ...x, qty: (x.qty || 0) + step } : x))
+        );
+    };
+
+    const decQty = (id, by = 1) => {
+        const step = Math.max(1, Number(by || 1));
+        setItems((prev) =>
+            prev.map((x) => {
+                if (x.id !== id) return x;
+                const next = (x.qty || 0) - step;
+                return { ...x, qty: Math.max(1, next) };
+            })
+        );
+    };
+
     const clearCart = () => setItems([]);
 
     const cartCount = useMemo(
@@ -75,6 +93,8 @@ export const CartProvider = ({ children }) => {
             cartCount,
             subtotal,
             addToCart,
+            incQty,
+            decQty,
             removeFromCart,
             setQty,
             clearCart,
