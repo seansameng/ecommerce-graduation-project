@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Product from "./pages/Product";
+import ProductDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
@@ -13,6 +15,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
+import CartPage from "./pages/Cart";
 // later: ProductManagement, OrderManagement
 
 function App() {
@@ -22,8 +25,13 @@ function App() {
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Product />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Home />} /> {/* For search results, can be enhanced later */}
+        <Route path="/cart" element={<CartPage />} /> {/* Placeholder for Cart page */}
+
 
         {/* ADMIN ROUTES */}
         <Route
