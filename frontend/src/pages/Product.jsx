@@ -2,12 +2,17 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Filter, Search, ShoppingCart } from "lucide-react";
 import { getProducts } from "../api/productApi";
+import useCart from "../hooks/useCart";
+import Navbar from "../components/navbar/Navbar.jsx";
+import Footer from "../components/footer/Footer.jsx";
 
 const FALLBACK_IMAGE =
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
 
 const Product = () => {
     const location = useLocation();
+    const { addToCart, cartCount } = useCart();
+    const [q, setQ] = useState("");
     const categoryFromUrl = useMemo(() => {
         const params = new URLSearchParams(location.search);
         const value = params.get("category");
@@ -64,22 +69,6 @@ const Product = () => {
         return list;
     }, [products, selectedCategory]);
 
-    const addToCart = (item) => {
-        const key = "cart";
-        const raw = localStorage.getItem(key);
-        const cart = raw ? JSON.parse(raw) : [];
-
-        const existing = cart.find((x) => x.id === item.id);
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            cart.push({ ...item, qty: 1 });
-        }
-
-        localStorage.setItem(key, JSON.stringify(cart));
-        alert("Added to cart.");
-    };
-
     const onSearchSubmit = (event) => {
         event.preventDefault();
         setQuery(searchInput.trim());
@@ -90,13 +79,15 @@ const Product = () => {
             className="min-h-screen bg-[#f7f4ee] text-slate-900"
             style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
         >
+            <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
+
             <section className="border-b border-slate-200/60 bg-white">
-                <div className="max-w-7xl mx-auto px-4 py-12">
+                <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
                     <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            {/* <div className="text-xs uppercase tracking-[0.4em] text-emerald-600 font-semibold mb-3">
+                            <div className="text-xs uppercase tracking-[0.4em] text-emerald-600 font-semibold mb-3">
                                 Curated tech
-                            </div> */}
+                            </div>
                             <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-3">
                                 Product Collection
                             </h1>
@@ -114,7 +105,7 @@ const Product = () => {
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto px-4 py-4 sticky top-0 z-20">
+            <section className="max-w-7xl mx-auto px-6 lg:px-8 py-4 sticky top-0 z-20">
                 <div className="bg-white/90 backdrop-blur rounded-3xl border border-slate-200/70 shadow-sm p-6">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <form onSubmit={onSearchSubmit} className="flex w-full lg:max-w-xl gap-3">
@@ -162,7 +153,7 @@ const Product = () => {
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto px-4 pb-16">
+            <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-16">
                 {status === "loading" && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {Array.from({ length: 8 }).map((_, index) => (
@@ -195,16 +186,19 @@ const Product = () => {
                 )}
 
                 {status === "success" && products.length > 0 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {products.map((product) => {
                             const price = Number(product.price) || 0;
                             const inStock = Number(product.stock) > 0;
                             return (
                                 <div
                                     key={product.id}
-                                    className="group bg-white rounded-2xl border border-slate-200/70 hover:border-emerald-200 hover:shadow-2xl transition-all overflow-hidden"
+                                    className="group bg-white rounded-3xl border border-slate-200/70 hover:border-emerald-200 hover:shadow-2xl transition-all overflow-hidden"
                                 >
-                                    <div className="relative aspect-square bg-slate-50 overflow-hidden">
+                                    <Link
+                                        to={`/products/${product.id}`}
+                                        className="relative block aspect-[4/3] bg-slate-50 overflow-hidden"
+                                    >
                                         <img
                                             src={product.imageUrl || FALLBACK_IMAGE}
                                             alt={product.name}
@@ -215,16 +209,22 @@ const Product = () => {
                                                 Out of Stock
                                             </span>
                                         )}
-                                    </div>
+                                    </Link>
 
                                     <div className="p-5">
-                                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                            {product.category || "Uncategorized"}
-                                        </p>
-                                        <h3 className="font-bold text-slate-900 mt-2 mb-3 text-lg leading-snug">
+                                        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                            <span>{product.category || "Uncategorized"}</span>
+                                            <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] text-slate-600">
+                                                {inStock ? `${product.stock} in stock` : "Notify me"}
+                                            </span>
+                                        </div>
+                                        <Link
+                                            to={`/products/${product.id}`}
+                                            className="mt-2 block font-extrabold text-slate-900 text-lg leading-snug hover:text-emerald-700"
+                                        >
                                             {product.name}
-                                        </h3>
-                                        <p className="text-sm text-slate-600 min-h-[2.5rem]">
+                                        </Link>
+                                        <p className="text-sm text-slate-600 mt-2 min-h-[2.5rem]">
                                             {product.description || "No description available."}
                                         </p>
 
@@ -232,30 +232,35 @@ const Product = () => {
                                             <span className="text-2xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                                                 ${price.toFixed(2)}
                                             </span>
-                                            <span className="text-xs text-slate-500">
-                                                {inStock ? `${product.stock} in stock` : "Notify me"}
-                                            </span>
                                         </div>
 
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                addToCart({
-                                                    id: product.id,
-                                                    name: product.name,
-                                                    price: product.price,
-                                                    imageUrl: product.imageUrl || FALLBACK_IMAGE,
-                                                })
-                                            }
-                                            disabled={!inStock}
-                                            className={`mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold transition-all ${inStock
-                                                ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow hover:shadow-lg"
-                                                : "bg-slate-200 text-slate-500 cursor-not-allowed"
-                                                }`}
-                                        >
-                                            <ShoppingCart className="w-4 h-4" />
-                                            Add to Cart
-                                        </button>
+                                        <div className="mt-5 grid grid-cols-2 gap-3">
+                                            <Link
+                                                to={`/products/${product.id}`}
+                                                className="inline-flex items-center justify-center rounded-xl px-4 py-3 text-sm font-bold ring-1 ring-slate-200 hover:bg-slate-50"
+                                            >
+                                                View
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    addToCart({
+                                                        id: product.id,
+                                                        name: product.name,
+                                                        price: product.price,
+                                                        imageUrl: product.imageUrl || FALLBACK_IMAGE,
+                                                    })
+                                                }
+                                                disabled={!inStock}
+                                                className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all ${inStock
+                                                    ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow hover:shadow-lg"
+                                                    : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                                                    }`}
+                                            >
+                                                <ShoppingCart className="w-4 h-4" />
+                                                Add to Cart
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -263,6 +268,8 @@ const Product = () => {
                     </div>
                 )}
             </section>
+
+            <Footer />
         </div>
     );
 };
