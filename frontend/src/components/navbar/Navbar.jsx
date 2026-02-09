@@ -9,13 +9,28 @@ export default function Navbar({
     brand = { name: "ShopEase", href: "/" },
 }) {
     const topNav = useMemo(
-        () => ["Home", "Phones", "Headphones", "Smartwatches", "Chargers", "Laptops", "Tablets", "Deals"],
+        () => [
+            "Home",
+            "Accessories",
+            "Laptops",
+            "Wearables",
+            "Audio",
+            "Cameras",
+            "Phones",
+            "Deals",
+        ],
         []
     );
 
+    const getNavHref = (item) => {
+        if (item === "Home") return "/";
+        if (item === "Deals") return "/products";
+        return `/products?category=${encodeURIComponent(item)}`;
+    };
+
     return (
         <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur">
-            <div className="mx-auto max-w-6xl px-4">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="flex items-center justify-between py-3">
                     <Link to={brand.href} className="flex items-center gap-2">
                         <div className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-500 text-white font-bold">
@@ -50,14 +65,18 @@ export default function Navbar({
                             <FiUser className="text-slate-500" />
                         </button>
 
-                        <button className="relative grid h-10 w-10 place-items-center rounded-xl hover:bg-slate-50 ring-1 ring-slate-200">
+                        <Link
+                            to="/cart"
+                            className="relative grid h-10 w-10 place-items-center rounded-xl hover:bg-slate-50 ring-1 ring-slate-200"
+                            aria-label="View cart"
+                        >
                             <FiShoppingCart className="text-slate-500" />
                             {cartCount > 0 && (
                                 <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-emerald-500 text-[11px] font-bold text-white">
                                     {cartCount}
                                 </span>
                             )}
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -66,7 +85,7 @@ export default function Navbar({
                     {topNav.map((item) => (
                         <Link
                             key={item}
-                            to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                            to={getNavHref(item)}
                             className={`whitespace-nowrap hover:text-slate-900 ${item === "Deals" ? "font-semibold text-rose-600" : ""
                                 }`}
                         >
