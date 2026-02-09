@@ -1,23 +1,8 @@
-﻿export const categories = [
+export const categories = [
   {
-    name: "Phones",
-    img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=60",
-    href: "/category/phones",
-  },
-  {
-    name: "Headphones",
-    img: "https://images.unsplash.com/photo-1518443895914-25f2f7a1c1c5?auto=format&fit=crop&w=900&q=60",
-    href: "/category/headphones",
-  },
-  {
-    name: "Watches",
-    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=60",
-    href: "/category/watches",
-  },
-  {
-    name: "Chargers",
-    img: "https://images.unsplash.com/photo-1582560475093-87fb4a2b7b38?auto=format&fit=crop&w=900&q=60",
-    href: "/category/chargers",
+    name: "Accessories",
+    img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=60",
+    href: "/category/accessories",
   },
   {
     name: "Laptops",
@@ -25,9 +10,24 @@
     href: "/category/laptops",
   },
   {
-    name: "Tablets",
-    img: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=900&q=60",
-    href: "/category/tablets",
+    name: "Wearables",
+    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=60",
+    href: "/category/wearables",
+  },
+  {
+    name: "Audio",
+    img: "https://images.unsplash.com/photo-1518443895914-25f2f7a1c1c5?auto=format&fit=crop&w=900&q=60",
+    href: "/category/audio",
+  },
+  {
+    name: "Cameras",
+    img: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=60",
+    href: "/category/cameras",
+  },
+  {
+    name: "Phones",
+    img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=60",
+    href: "/category/phones",
   },
 ];
 
