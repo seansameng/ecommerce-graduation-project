@@ -2,10 +2,10 @@
 
 export default function CategorySection({ categories = [] }) {
   return (
-    <section className="mt-12">
+    <section id="categories" className="mt-12">
       <div className="flex items-end justify-between">
         <h2 className="text-xl font-extrabold tracking-tight">Shop by Category</h2>
-        <Link to="/categories" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+        <Link to="/products" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
           View All
         </Link>
       </div>
@@ -14,7 +14,7 @@ export default function CategorySection({ categories = [] }) {
         {categories.map((c) => (
           <Link
             key={c.name}
-            to={c.href}
+            to={`/products?category=${encodeURIComponent(c.name)}`}
             className="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100"
           >
             <img
