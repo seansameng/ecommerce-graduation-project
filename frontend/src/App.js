@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/products" element={<Product />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-success/:id" element={<OrderSuccess />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/search" element={<Home />} /> {/* For search results, can be enhanced later */}
