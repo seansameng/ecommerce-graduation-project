@@ -49,7 +49,7 @@ export default function HeroSection({ featuredDeals = [] }) {
                 Shop Now
               </Link>
               <Link
-                to="/categories"
+                to="/#categories"
                 className="inline-flex items-center justify-center rounded-xl bg-white/10 px-5 py-3 text-sm font-bold text-white ring-1 ring-white/20 hover:bg-white/20"
               >
                 View Categories
