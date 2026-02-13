@@ -10,6 +10,7 @@ import {
 const emptyCategory = {
     id: null,
     name: "",
+    imageUrl: "",
 };
 
 export default function CategoryManagement() {
@@ -61,7 +62,11 @@ export default function CategoryManagement() {
     const openEdit = (category) => {
         setMode("edit");
         setFormErr("");
-        setForm({ id: category.id, name: category.name || "" });
+        setForm({
+            id: category.id,
+            name: category.name || "",
+            imageUrl: category.imageUrl || category.image_url || "",
+        });
         setOpen(true);
     };
 
@@ -93,7 +98,10 @@ export default function CategoryManagement() {
         setFormErr("");
 
         try {
-            const payload = { name: form.name.trim() };
+            const payload = {
+                name: form.name.trim(),
+                imageUrl: form.imageUrl ? form.imageUrl.trim() : "",
+            };
 
             if (mode === "create") {
                 const res = await createCategory(payload);
@@ -188,6 +196,7 @@ export default function CategoryManagement() {
                                 <thead className="bg-gray-50 border-b border-gray-200">
                                     <tr>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">Category</th>
+                                        <th className="text-left px-5 py-3 font-bold text-gray-700">Image</th>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">Created</th>
                                         <th className="text-right px-5 py-3 font-bold text-gray-700">Actions</th>
                                     </tr>
@@ -205,6 +214,23 @@ export default function CategoryManagement() {
                                                         <p className="text-xs text-gray-500">ID: {c.id}</p>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td className="px-5 py-4">
+                                                {c.imageUrl || c.image_url ? (
+                                                    <div className="flex items-center gap-3">
+                                                        <img
+                                                            src={c.imageUrl || c.image_url}
+                                                            alt={`${c.name} category`}
+                                                            className="h-10 w-10 rounded-lg object-cover border border-gray-200"
+                                                            loading="lazy"
+                                                        />
+                                                        <span className="text-xs text-gray-500 truncate max-w-[220px]">
+                                                            {c.imageUrl || c.image_url}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-xs text-gray-400">-</span>
+                                                )}
                                             </td>
                                             <td className="px-5 py-4 text-gray-700">
                                                 {String(c.createdAt || "").slice(0, 10) || "-"}
@@ -230,7 +256,7 @@ export default function CategoryManagement() {
 
                                     {filtered.length === 0 && (
                                         <tr>
-                                            <td colSpan={3} className="px-5 py-10 text-center text-gray-500">
+                                            <td colSpan={4} className="px-5 py-10 text-center text-gray-500">
                                                 No categories found.
                                             </td>
                                         </tr>
@@ -277,6 +303,16 @@ export default function CategoryManagement() {
                                         onChange={onChange}
                                         className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
                                         placeholder="Category name"
+                                    />
+                                </div>
+                                <div className="mt-4">
+                                    <label className="text-sm font-bold text-gray-700">Image URL</label>
+                                    <input
+                                        name="imageUrl"
+                                        value={form.imageUrl}
+                                        onChange={onChange}
+                                        className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
+                                        placeholder="https://..."
                                     />
                                 </div>
                             </div>
