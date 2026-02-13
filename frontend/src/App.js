@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
+import CategoryManagement from "./pages/admin/CategoryManagement";
 import CartPage from "./pages/Cart";
 // later: ProductManagement, OrderManagement
 
@@ -47,6 +48,7 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<UserManagement />} />
           <Route path="products" element={<ProductManagement />} />
+          <Route path="categories" element={<CategoryManagement />} />
           <Route path="orders" element={<OrderManagement />} />
 
           {/* 
