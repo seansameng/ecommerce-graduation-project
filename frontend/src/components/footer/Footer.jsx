@@ -1,6 +1,15 @@
 const Footer = ({ categories = [] }) => {
     const categoryItems = categories
-        .map((item) => (typeof item === "string" ? { name: item } : item))
+        .map((item) => {
+            if (typeof item === "string") return { name: item };
+            if (!item) return null;
+
+            const imageUrl = item.image_url || item.imageUrl || item.imgUrl || "";
+            return {
+                ...item,
+                imageUrl,
+            };
+        })
         .filter((item) => item && item.name)
         .slice(0, 2);
 
@@ -35,10 +44,18 @@ const Footer = ({ categories = [] }) => {
                             {categoryItems.map((category) => (
                                 <li key={category.name}>
                                     <a
-                                        className="hover:text-slate-900"
+                                        className="inline-flex items-center gap-2 hover:text-slate-900"
                                         href={`/products?category=${encodeURIComponent(category.name)}`}
                                     >
-                                        {category.name}
+                                        {category.imageUrl ? (
+                                            <img
+                                                src={category.imageUrl}
+                                                alt={`${category.name} category`}
+                                                className="h-5 w-5 rounded object-cover"
+                                                loading="lazy"
+                                            />
+                                        ) : null}
+                                        <span>{category.name}</span>
                                     </a>
                                 </li>
                             ))}
