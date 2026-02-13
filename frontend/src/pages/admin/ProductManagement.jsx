@@ -6,20 +6,19 @@ import {
     updateProduct,
     deleteProductById,
 } from "../../api/adminProductApi";
+import { getCategories as getAdminCategories } from "../../api/adminCategoryApi";
 
-const categories = ["Accessories", "Laptops", "Wearables", "Audio", "Cameras"];
-
-const emptyProduct = {
+const makeEmptyProduct = (defaultCategory = "") => ({
     id: null,
     name: "",
     sku: "",
-    category: categories[0],
+    category: defaultCategory,
     price: "",
     stock: "",
     status: "ACTIVE", // ACTIVE | DRAFT
     imageUrl: "",
     description: "",
-};
+});
 
 const badge = (type) => {
     if (type === "ACTIVE") return "bg-emerald-50 text-emerald-700";
@@ -29,6 +28,7 @@ const badge = (type) => {
 
 export default function AdminProducts() {
     const [items, setItems] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     // list UI state
     const [q, setQ] = useState("");
@@ -43,9 +43,11 @@ export default function AdminProducts() {
     // modal state
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState("create"); // create | edit
-    const [form, setForm] = useState(emptyProduct);
+    const [form, setForm] = useState(makeEmptyProduct());
     const [saving, setSaving] = useState(false);
     const [formErr, setFormErr] = useState("");
+
+    const defaultCategory = categories[0] || "";
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -60,8 +62,21 @@ export default function AdminProducts() {
         }
     };
 
+    const fetchCategories = async () => {
+        try {
+            const res = await getAdminCategories();
+            const names = (res.data || [])
+                .map((c) => c?.name)
+                .filter(Boolean);
+            setCategories(names);
+        } catch {
+            setCategories([]);
+        }
+    };
+
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
 
     const filtered = useMemo(() => {
@@ -98,7 +113,7 @@ export default function AdminProducts() {
 
     const openCreate = () => {
         setMode("create");
-        setForm(emptyProduct);
+        setForm(makeEmptyProduct(defaultCategory));
         setFormErr("");
         setOpen(true);
     };
@@ -110,7 +125,7 @@ export default function AdminProducts() {
             id: p.id,
             name: p.name || p.productName || "",
             sku: p.sku || "",
-            category: p.category || categories[0],
+            category: p.category || defaultCategory,
             price: String(p.price ?? ""),
             stock: String(p.stock ?? ""),
             status: p.status || "ACTIVE",
@@ -135,6 +150,7 @@ export default function AdminProducts() {
     const validate = () => {
         if (!form.name.trim()) return "Product name is required";
         if (!form.sku.trim()) return "SKU is required";
+        if (!form.category) return "Category is required";
         const price = Number(form.price);
         if (Number.isNaN(price) || price < 0) return "Price must be a valid number";
         const stock = Number(form.stock);
@@ -452,6 +468,9 @@ export default function AdminProducts() {
                                             onChange={onChange}
                                             className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
                                         >
+                                            {categories.length === 0 && (
+                                                <option value="">No categories</option>
+                                            )}
                                             {categories.map((c) => (
                                                 <option key={c} value={c}>
                                                     {c}
