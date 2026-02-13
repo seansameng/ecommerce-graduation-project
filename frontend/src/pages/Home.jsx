@@ -8,8 +8,8 @@ import CategorySection from "../components/category/CategorySection.jsx";
 import FeaturedDealsSection from "../components/product/FeaturedDealsSection.jsx";
 import RecentlyViewedSection from "../components/recent/RecentlyViewedSection.jsx";
 
-import { categories } from "../data/homeData";
 import { getProducts } from "../api/productApi";
+import { getCategories } from "../api/categoryApi";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
@@ -17,6 +17,7 @@ const FALLBACK_IMAGE =
 export default function Home() {
   const [q, setQ] = useState("");
   const [products, setProducts] = useState([]);
+  const [categoryNames, setCategoryNames] = useState([]);
 
   useEffect(() => {
     let ignore = false;
@@ -25,13 +26,28 @@ export default function Home() {
       .then((res) => {
         if (ignore) return;
         const items = Array.isArray(res.data) ? res.data : [];
-        const mapped = items.map((product) => ({
-          id: product.id,
-          name: product.name,
-          category: product?.category?.name || product?.category || "Uncategorized",
-          price: product.price,
-          img: product.imageUrl || FALLBACK_IMAGE,
-        }));
+        const mapped = items.map((product, index) => {
+          const price = Number(product.price || 0);
+          const hasDiscount = index % 3 === 0;
+          const oldPrice = hasDiscount ? Number((price * 1.18).toFixed(2)) : null;
+          const discountPercent = hasDiscount
+            ? `-${Math.round((1 - price / oldPrice) * 100)}%`
+            : "";
+
+          return {
+            id: product.id,
+            name: product.name,
+            category: product?.category?.name || product?.category || "Uncategorized",
+            price,
+            oldPrice,
+            tag: discountPercent,
+            rating: product.rating ?? 4.8 - (index % 4) * 0.1,
+            reviews: product.reviews ?? 60 + index * 9,
+            shipping: "Free shipping",
+            stock: index % 4 === 0 ? "Low stock" : "In stock",
+            img: product.imageUrl || FALLBACK_IMAGE,
+          };
+        });
         setProducts(mapped);
       })
       .catch(() => {
@@ -44,7 +60,39 @@ export default function Home() {
     };
   }, []);
 
-  const featuredDeals = useMemo(() => products.slice(0, 4), [products]);
+  useEffect(() => {
+    let ignore = false;
+    getCategories()
+      .then((res) => {
+        if (ignore) return;
+        const names = Array.isArray(res.data)
+          ? res.data.map((c) => c?.name).filter(Boolean)
+          : [];
+        setCategoryNames(names);
+      })
+      .catch(() => {
+        if (ignore) return;
+        setCategoryNames([]);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const featuredDeals = useMemo(() => products.slice(0, 8), [products]);
+  const categories = useMemo(() => {
+    const map = new Map();
+    categoryNames.forEach((name) => {
+      if (!name || map.has(name)) return;
+      const match = products.find((p) => p.category === name);
+      map.set(name, {
+        name,
+        img: match?.img || match?.imageUrl || FALLBACK_IMAGE,
+      });
+    });
+    return Array.from(map.values());
+  }, [categoryNames, products]);
   const recentlyViewed = useMemo(() => {
     const shuffled = [...products];
     for (let i = shuffled.length - 1; i > 0; i -= 1) {
@@ -56,20 +104,20 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen bg-[#f7f4ee] text-slate-900"
-      style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
+      className="min-h-screen bg-slate-50 text-slate-900"
+      style={{ fontFamily: '"Ubuntu", "Segoe UI", sans-serif' }}
     >
       <Navbar q={q} setQ={setQ} cartCount={3} brand={{ name: "ShopEase", href: "/" }} />
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8">
+      <main className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8">
         <HeroSection featuredDeals={featuredDeals} />
         <InfoPills />
-        <CategorySection categories={categories} />
-        <FeaturedDealsSection featuredDeals={featuredDeals} />
-        <RecentlyViewedSection recentlyViewed={recentlyViewed} />
+        {categories.length > 0 && <CategorySection categories={categories} />}
+        {featuredDeals.length > 0 && <FeaturedDealsSection featuredDeals={featuredDeals} />}
+        {recentlyViewed.length > 0 && <RecentlyViewedSection recentlyViewed={recentlyViewed} />}
       </main>
 
-      <Footer />
+      <Footer categories={categories} />
     </div>
   );
 }
