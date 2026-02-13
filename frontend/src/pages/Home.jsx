@@ -17,7 +17,7 @@ const FALLBACK_IMAGE =
 export default function Home() {
   const [q, setQ] = useState("");
   const [products, setProducts] = useState([]);
-  const [categoryNames, setCategoryNames] = useState([]);
+  const [categoryItems, setCategoryItems] = useState([]);
 
   useEffect(() => {
     let ignore = false;
@@ -65,14 +65,19 @@ export default function Home() {
     getCategories()
       .then((res) => {
         if (ignore) return;
-        const names = Array.isArray(res.data)
-          ? res.data.map((c) => c?.name).filter(Boolean)
+        const items = Array.isArray(res.data)
+          ? res.data
+              .map((c) => ({
+                name: c?.name,
+                imageUrl: c?.imageUrl || c?.image_url || "",
+              }))
+              .filter((c) => c.name)
           : [];
-        setCategoryNames(names);
+        setCategoryItems(items);
       })
       .catch(() => {
         if (ignore) return;
-        setCategoryNames([]);
+        setCategoryItems([]);
       });
 
     return () => {
@@ -83,16 +88,18 @@ export default function Home() {
   const featuredDeals = useMemo(() => products.slice(0, 8), [products]);
   const categories = useMemo(() => {
     const map = new Map();
-    categoryNames.forEach((name) => {
-      if (!name || map.has(name)) return;
+    categoryItems.forEach((cat) => {
+      if (!cat.name || map.has(cat.name)) return;
+      const name = cat.name;
       const match = products.find((p) => p.category === name);
       map.set(name, {
         name,
-        img: match?.img || match?.imageUrl || FALLBACK_IMAGE,
+        imageUrl: cat.imageUrl || "",
+        img: cat.imageUrl || match?.img || match?.imageUrl || FALLBACK_IMAGE,
       });
     });
     return Array.from(map.values());
-  }, [categoryNames, products]);
+  }, [categoryItems, products]);
   const recentlyViewed = useMemo(() => {
     const shuffled = [...products];
     for (let i = shuffled.length - 1; i > 0; i -= 1) {
