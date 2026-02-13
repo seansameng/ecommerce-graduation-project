@@ -41,7 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Category already exists");
         }
 
-        Category category = Category.builder().name(name).build();
+        Category category = Category.builder()
+                .name(name)
+                .imageUrl(normalizeImageUrl(request.getImageUrl()))
+                .build();
         return toResponse(categoryRepository.save(category));
     }
 
@@ -58,6 +61,9 @@ public class CategoryServiceImpl implements CategoryService {
         });
 
         category.setName(name);
+        if (request.getImageUrl() != null) {
+            category.setImageUrl(normalizeImageUrl(request.getImageUrl()));
+        }
         return toResponse(categoryRepository.save(category));
     }
 
@@ -79,10 +85,17 @@ public class CategoryServiceImpl implements CategoryService {
         return value.trim();
     }
 
+    private String normalizeImageUrl(String value) {
+        if (value == null) return null;
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
+    }
+
     private CategoryResponse toResponse(Category category) {
         CategoryResponse response = new CategoryResponse();
         response.setId(category.getId());
         response.setName(category.getName());
+        response.setImageUrl(category.getImageUrl());
         response.setCreatedAt(category.getCreatedAt());
         response.setUpdatedAt(category.getUpdatedAt());
         return response;
