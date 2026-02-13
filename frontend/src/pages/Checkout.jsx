@@ -94,7 +94,7 @@ export default function Checkout() {
   return (
     <div
       className="min-h-screen bg-[#f7f4ee] text-slate-900"
-      style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
+      style={{ fontFamily: '"Ubuntu", "Segoe UI", sans-serif' }}
     >
       <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
 
