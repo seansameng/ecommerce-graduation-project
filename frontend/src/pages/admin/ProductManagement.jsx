@@ -322,6 +322,7 @@ export default function AdminProducts() {
                                 <thead className="bg-gray-50 border-b border-gray-200">
                                     <tr>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">Product</th>
+                                        <th className="text-left px-5 py-3 font-bold text-gray-700">Image</th>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">SKU</th>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">Category</th>
                                         <th className="text-left px-5 py-3 font-bold text-gray-700">Price</th>
@@ -348,6 +349,24 @@ export default function AdminProducts() {
                                                             <p className="text-xs text-gray-500">ID: {p.id}</p>
                                                         </div>
                                                     </div>
+                                                </td>
+
+                                                <td className="px-5 py-4">
+                                                    {p.imageUrl ? (
+                                                        <div className="flex items-center gap-3">
+                                                            <img
+                                                                src={p.imageUrl}
+                                                                alt={name}
+                                                                className="h-10 w-10 rounded-lg object-cover border border-gray-200"
+                                                                loading="lazy"
+                                                            />
+                                                            <span className="text-xs text-gray-500 truncate max-w-[220px]">
+                                                                {p.imageUrl}
+                                                            </span>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400">-</span>
+                                                    )}
                                                 </td>
 
                                                 <td className="px-5 py-4 text-gray-700">{p.sku}</td>
@@ -397,7 +416,7 @@ export default function AdminProducts() {
 
                                     {filtered.length === 0 && (
                                         <tr>
-                                            <td colSpan={7} className="px-5 py-10 text-center text-gray-500">
+                                            <td colSpan={8} className="px-5 py-10 text-center text-gray-500">
                                                 No products found.
                                             </td>
                                         </tr>
