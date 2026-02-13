@@ -4,6 +4,79 @@ import useCart from "../../hooks/useCart";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
 
+function ProductCard({ product, onAdd, onView }) {
+  const imageSrc = product.img || product.imageUrl || FALLBACK_IMAGE;
+  const discount = product.tag || product.discount;
+
+  return (
+    <div className="group overflow-hidden rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-lg">
+      <div className="relative">
+        <img
+          src={imageSrc}
+          alt={product.name}
+          className="aspect-square w-full rounded-2xl object-cover"
+          loading="lazy"
+        />
+        {discount ? (
+          <span className="absolute left-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white">
+            {discount}
+          </span>
+        ) : null}
+      </div>
+
+      <div className="mt-3">
+        <div className="min-h-[40px] text-sm font-semibold text-slate-900 line-clamp-2">
+          {product.name}
+        </div>
+
+        <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+          <span>⭐ {product.rating ?? 4.6}</span>
+          <span>({product.reviews ?? 120})</span>
+        </div>
+
+        <div className="mt-2 flex items-center gap-2">
+          {product.oldPrice ? (
+            <span className="text-xs text-slate-400 line-through">
+              ${Number(product.oldPrice).toFixed(2)}
+            </span>
+          ) : null}
+          <span className="text-lg font-semibold text-slate-900">
+            ${Number(product.price || 0).toFixed(2)}
+          </span>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between text-xs">
+          <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-600">
+            {product.shipping || "Free shipping"}
+          </span>
+          <span
+            className={`font-semibold ${
+              product.stock === "Low stock" ? "text-amber-600" : "text-emerald-700"
+            }`}
+          >
+            {product.stock || "In stock"}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={onAdd}
+          className="mt-3 w-full rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-500 group-hover:scale-[1.01] transform-gpu"
+        >
+          Add to Cart
+        </button>
+        <button
+          type="button"
+          onClick={onView}
+          className="mt-2 w-full text-xs font-semibold text-slate-600 hover:text-slate-900"
+        >
+          Details →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function FeaturedDealsSection({ featuredDeals = [] }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -20,78 +93,26 @@ export default function FeaturedDealsSection({ featuredDeals = [] }) {
 
   return (
     <section className="mt-12">
-      <h2 className="text-xl font-extrabold tracking-tight">Featured Deals</h2>
+      <div className="flex items-end justify-between">
+        <h2 className="text-xl font-semibold tracking-tight">Featured Deals</h2>
+        <button
+          type="button"
+          onClick={() => navigate("/products")}
+          className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+        >
+          See all deals →
+        </button>
+      </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {featuredDeals.map((p) => {
-          const imageSrc = p.img || p.imageUrl || FALLBACK_IMAGE;
-          const category = p?.category?.name || p?.category || "Uncategorized";
-          return (
-            <div
-              key={p.id ?? p.name}
-              className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-100"
-            >
-              <div className="relative h-44 overflow-hidden">
-                <img
-                  src={imageSrc}
-                  alt={p.name}
-                  className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"
-                  loading="lazy"
-                />
-                {p.tag ? (
-                  <span className="absolute left-3 top-3 rounded-xl bg-rose-500 px-2.5 py-1 text-xs font-extrabold text-white">
-                    {p.tag}
-                  </span>
-                ) : null}
-              </div>
-
-              <div className="p-4">
-                <div className="text-[11px] font-bold tracking-wider text-slate-400">
-                  {category}
-                </div>
-                <div className="mt-1 font-extrabold">{p.name}</div>
-
-                {p.rating ? (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                    <span className="text-amber-500">*</span>
-                    <span className="font-semibold text-slate-700">{p.rating}</span>
-                    {p.reviews ? <span>({p.reviews})</span> : null}
-                  </div>
-                ) : null}
-
-                <div className="mt-3 flex items-baseline gap-2">
-                  {p.oldPrice ? (
-                    <span className="text-sm text-slate-400 line-through">
-                      ${Number(p.oldPrice).toFixed(2)}
-                    </span>
-                  ) : null}
-                  <span className="text-lg font-extrabold text-emerald-600">
-                    ${Number(p.price || 0).toFixed(2)}
-                  </span>
-                </div>
-
-                <div className="mt-4 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCart(p)}
-                    className="flex-1 rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-slate-800"
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      p?.id ? navigate(`/products/${p.id}`) : navigate("/products")
-                    }
-                    className="rounded-xl px-4 py-2 text-sm font-bold ring-1 ring-slate-200 hover:bg-slate-50"
-                  >
-                    View
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="mt-4 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {featuredDeals.map((p) => (
+          <ProductCard
+            key={p.id ?? p.name}
+            product={p}
+            onAdd={() => handleAddToCart(p)}
+            onView={() => (p?.id ? navigate(`/products/${p.id}`) : navigate("/products"))}
+          />
+        ))}
       </div>
     </section>
   );
