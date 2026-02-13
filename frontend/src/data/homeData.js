@@ -40,6 +40,8 @@ export const featuredDeals = [
     reviews: 540,
     oldPrice: 1099.0,
     price: 934.15,
+    shipping: "Free shipping",
+    stock: "In stock",
     img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=60",
   },
   {
@@ -50,6 +52,8 @@ export const featuredDeals = [
     reviews: 128,
     oldPrice: null,
     price: 120.0,
+    shipping: "Free shipping",
+    stock: "Low stock",
     img: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=60",
   },
   {
@@ -60,6 +64,8 @@ export const featuredDeals = [
     reviews: 89,
     oldPrice: null,
     price: 120.0,
+    shipping: "Free shipping",
+    stock: "In stock",
     img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=60",
   },
   {
@@ -70,6 +76,8 @@ export const featuredDeals = [
     reviews: 245,
     oldPrice: null,
     price: 799.0,
+    shipping: "Free shipping",
+    stock: "In stock",
     img: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=900&q=60",
   },
 ];
@@ -78,26 +86,36 @@ export const recentlyViewed = [
   {
     name: "Smart Fitness Watch",
     price: 199,
+    rating: 4.6,
+    reviews: 154,
     img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=60",
   },
   {
     name: "Premium Headphones",
     price: 239.2,
+    rating: 4.7,
+    reviews: 87,
     img: "https://images.unsplash.com/photo-1518443895914-25f2f7a1c1c5?auto=format&fit=crop&w=900&q=60",
   },
   {
     name: "Tablet Pro 11-inch",
     price: 799,
+    rating: 4.8,
+    reviews: 210,
     img: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=900&q=60",
   },
   {
     name: "Wireless Charging Lamp",
     price: 45,
+    rating: 4.4,
+    reviews: 64,
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=60",
   },
   {
     name: "RGB Mechanical Keyboard",
     price: 120,
+    rating: 4.7,
+    reviews: 130,
     img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=60",
   },
 ];
