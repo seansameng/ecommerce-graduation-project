@@ -18,7 +18,7 @@ export default function CategorySection({ categories = [] }) {
             className="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200"
           >
             <img
-              src={c.img}
+              src={c.imageUrl || c.image_url || c.img}
               alt={c.name}
               className="h-28 w-full object-cover transition duration-500 group-hover:scale-[1.05]"
               loading="lazy"
