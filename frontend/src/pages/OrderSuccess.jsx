@@ -6,7 +6,7 @@ export default function OrderSuccess() {
     return (
         <div
             className="min-h-screen bg-[#f7f4ee] text-slate-900"
-            style={{ fontFamily: '"Space Grotesk", "DM Sans", "Segoe UI", sans-serif' }}
+            style={{ fontFamily: '"Ubuntu", "Segoe UI", sans-serif' }}
         >
             <main className="max-w-3xl mx-auto px-6 lg:px-8 py-16">
                 <div className="rounded-3xl bg-white p-8 ring-1 ring-slate-100">
@@ -34,4 +34,3 @@ export default function OrderSuccess() {
         </div>
     );
 }
-
