@@ -67,11 +67,11 @@ export default function Home() {
         if (ignore) return;
         const items = Array.isArray(res.data)
           ? res.data
-              .map((c) => ({
-                name: c?.name,
-                imageUrl: c?.imageUrl || c?.image_url || "",
-              }))
-              .filter((c) => c.name)
+            .map((c) => ({
+              name: c?.name,
+              imageUrl: c?.imageUrl || c?.image_url || "",
+            }))
+            .filter((c) => c.name)
           : [];
         setCategoryItems(items);
       })
@@ -118,7 +118,7 @@ export default function Home() {
 
       <main className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8">
         <HeroSection featuredDeals={featuredDeals} />
-        <InfoPills />
+        {/* <InfoPills /> */}
         {categories.length > 0 && <CategorySection categories={categories} />}
         {featuredDeals.length > 0 && <FeaturedDealsSection featuredDeals={featuredDeals} />}
         {recentlyViewed.length > 0 && <RecentlyViewedSection recentlyViewed={recentlyViewed} />}
