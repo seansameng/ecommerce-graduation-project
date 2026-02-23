@@ -7,14 +7,12 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
 
     const topNav = useMemo(
         () => [
-            "Home",
-            "Accessories",
+            "Smartphones",
             "Laptops",
-            "Wearables",
-            "Audio",
-            "Cameras",
-            "Phones",
-            "Deals",
+            "Tablets",
+            "Smartwatches",
+            "Headphones",
+            "Speakers",
         ],
         []
     );
