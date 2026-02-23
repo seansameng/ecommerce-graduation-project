@@ -4,6 +4,7 @@ import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 
 export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEase", href: "/" } }) {
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [showAccountMenu, setShowAccountMenu] = useState(false);
 
     const topNav = useMemo(
         () => [
@@ -107,9 +108,52 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                             Sign In
                         </Link>
 
-                        <button className="grid h-10 w-10 place-items-center rounded-xl hover:bg-slate-50 ring-1 ring-slate-200 focus-visible:ring-2 focus-visible:ring-emerald-500">
-                            <FiUser className="text-slate-500" />
-                        </button>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={() => setShowAccountMenu((prev) => !prev)}
+                                className="grid h-10 w-10 place-items-center rounded-xl hover:bg-slate-50 ring-1 ring-slate-200 focus-visible:ring-2 focus-visible:ring-emerald-500"
+                                aria-label="Account menu"
+                            >
+                                <FiUser className="text-slate-500" />
+                            </button>
+
+                            {showAccountMenu ? (
+                                <div
+                                    className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1 shadow-lg"
+                                    onMouseLeave={() => setShowAccountMenu(false)}
+                                >
+                                    <Link
+                                        to="/account"
+                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                        onClick={() => setShowAccountMenu(false)}
+                                    >
+                                        Profile
+                                    </Link>
+                                    <Link
+                                        to="/orders"
+                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                        onClick={() => setShowAccountMenu(false)}
+                                    >
+                                        Orders
+                                    </Link>
+                                    <Link
+                                        to="/settings"
+                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                        onClick={() => setShowAccountMenu(false)}
+                                    >
+                                        Settings
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        className="w-full rounded-lg px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
+                                        onClick={() => setShowAccountMenu(false)}
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            ) : null}
+                        </div>
 
                         <Link
                             to="/cart"
