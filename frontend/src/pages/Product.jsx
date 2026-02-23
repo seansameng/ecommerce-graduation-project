@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Filter, Search, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import { getProducts } from "../api/productApi";
@@ -11,14 +11,6 @@ const FALLBACK_IMAGE =
 
 
 
-const SORT_OPTIONS = [
-  { value: "best", label: "Best match" },
-  { value: "price-asc", label: "Price low-high" },
-  { value: "price-desc", label: "Price high-low" },
-  { value: "newest", label: "Newest" },
-  { value: "rating", label: "Rating" },
-];
-
 export default function Product() {
   const location = useLocation();
   const { addToCart, cartCount } = useCart();
@@ -26,11 +18,7 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [sortBy, setSortBy] = useState("best");
   const [showFilters, setShowFilters] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(8);
 
   const categoryFromUrl = useMemo(() => {
     const params = new URLSearchParams(location.search);
@@ -122,7 +110,7 @@ export default function Product() {
   }, [priceBounds.min, priceBounds.max]);
 
   const filteredProducts = useMemo(() => {
-    const term = searchTerm.toLowerCase();
+    const term = q.trim().toLowerCase();
     return allProducts.filter((p) => {
       if (term) {
         const haystack = `${p.name} ${p.description} ${p.brand} ${p.category}`.toLowerCase();
@@ -135,33 +123,7 @@ export default function Product() {
       if (filters.availability === "in" && p.stock <= 0) return false;
       return true;
     });
-  }, [allProducts, filters, searchTerm]);
-
-  const sortedProducts = useMemo(() => {
-    const items = [...filteredProducts];
-    switch (sortBy) {
-      case "price-asc":
-        return items.sort((a, b) => a.price - b.price);
-      case "price-desc":
-        return items.sort((a, b) => b.price - a.price);
-      case "newest":
-        return items.sort((a, b) => String(b.id).localeCompare(String(a.id)));
-      case "rating":
-        return items.sort((a, b) => b.rating - a.rating);
-      default:
-        return items.sort((a, b) => b.rating * b.reviews - a.rating * a.reviews);
-    }
-  }, [filteredProducts, sortBy]);
-
-  const visibleProducts = useMemo(
-    () => sortedProducts.slice(0, visibleCount),
-    [sortedProducts, visibleCount]
-  );
-
-  const onSearchSubmit = (event) => {
-    event.preventDefault();
-    setSearchTerm(searchInput.trim());
-  };
+  }, [allProducts, filters, q]);
 
   const clearAllFilters = () => {
     setFilters({
@@ -172,28 +134,9 @@ export default function Product() {
       priceMin: priceBounds.min,
       priceMax: priceBounds.max,
     });
-    setSearchTerm("");
-    setSearchInput("");
+    setQ("");
   };
 
-  const activeChips = useMemo(() => {
-    const chips = [];
-    if (searchTerm) chips.push({ key: "search", label: `Search: ${searchTerm}` });
-    if (filters.category !== "All") chips.push({ key: "category", label: filters.category });
-    if (filters.brand !== "All") chips.push({ key: "brand", label: filters.brand });
-    if (filters.rating > 0) chips.push({ key: "rating", label: `${filters.rating}+ stars` });
-    if (filters.availability === "in") chips.push({ key: "availability", label: "In stock" });
-    if (
-      filters.priceMin !== priceBounds.min ||
-      filters.priceMax !== priceBounds.max
-    ) {
-      chips.push({
-        key: "price",
-        label: `Price: $${filters.priceMin}ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“$${filters.priceMax}`,
-      });
-    }
-    return chips;
-  }, [filters, priceBounds.max, priceBounds.min, searchTerm]);
 
   return (
     <div
@@ -229,31 +172,15 @@ export default function Product() {
       </section> */}
 
       <section className="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-6">
-        <PLPToolbar
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          onSearchSubmit={onSearchSubmit}
-          activeChips={activeChips}
-          onRemoveChip={(key) => {
-            if (key === "search") setSearchTerm("");
-            if (key === "category") setFilters((prev) => ({ ...prev, category: "All" }));
-            if (key === "brand") setFilters((prev) => ({ ...prev, brand: "All" }));
-            if (key === "rating") setFilters((prev) => ({ ...prev, rating: 0 }));
-            if (key === "availability") setFilters((prev) => ({ ...prev, availability: "all" }));
-            if (key === "price")
-              setFilters((prev) => ({
-                ...prev,
-                priceMin: priceBounds.min,
-                priceMax: priceBounds.max,
-              }));
-          }}
-          clearAll={clearAllFilters}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          totalCount={sortedProducts.length}
-          visibleCount={visibleProducts.length}
-          onOpenFilters={() => setShowFilters(true)}
-        />
+        <div className="mb-4 flex justify-end lg:hidden">
+          <button
+            type="button"
+            onClick={() => setShowFilters(true)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            Filters
+          </button>
+        </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]">
           <FilterSidebar
@@ -271,29 +198,23 @@ export default function Product() {
                 {error}
               </div>
             )}
-            {status !== "loading" && sortedProducts.length === 0 && (
+            {status !== "loading" && filteredProducts.length === 0 && (
               <EmptyState onReset={clearAllFilters} />
             )}
-            {sortedProducts.length > 0 && (
-              <>
-                <ProductGrid
-                  products={visibleProducts}
-                  onAdd={(product) =>
-                    addToCart({
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      imageUrl: product.imageUrl || FALLBACK_IMAGE,
-                      stock: product.stock,
-                      status: product.status,
-                    })
-                  }
-                />
-                <Pagination
-                  canLoadMore={visibleProducts.length < sortedProducts.length}
-                  onLoadMore={() => setVisibleCount((count) => count + 4)}
-                />
-              </>
+            {filteredProducts.length > 0 && (
+              <ProductGrid
+                products={filteredProducts}
+                onAdd={(product) =>
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    imageUrl: product.imageUrl || FALLBACK_IMAGE,
+                    stock: product.stock,
+                    status: product.status,
+                  })
+                }
+              />
             )}
           </div>
         </div>
@@ -311,94 +232,6 @@ export default function Product() {
       />
 
       <Footer categories={categories} />
-    </div>
-  );
-}
-
-function PLPToolbar({
-  searchInput,
-  setSearchInput,
-  onSearchSubmit,
-  activeChips,
-  onRemoveChip,
-  clearAll,
-  sortBy,
-  setSortBy,
-  totalCount,
-  visibleCount,
-  onOpenFilters,
-}) {
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <form onSubmit={onSearchSubmit} className="flex w-full lg:max-w-xl gap-3">
-          <div className="relative flex-1">
-            <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-            <input
-              value={searchInput}
-              onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="Search by product name"
-              className="w-full border border-slate-200 rounded-xl px-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-              aria-label="Search products"
-            />
-          </div>
-          <button
-            type="submit"
-            className="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
-          >
-            Search
-          </button>
-        </form>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onOpenFilters}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 lg:hidden"
-          >
-            <Filter className="w-4 h-4" />
-            Filters
-          </button>
-          <select
-            value={sortBy}
-            onChange={(event) => setSortBy(event.target.value)}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
-            aria-label="Sort products"
-          >
-            {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <div className="text-sm text-slate-500">
-            Showing {Math.min(visibleCount, totalCount)} of {totalCount} items
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {activeChips.map((chip) => (
-          <button
-            key={chip.key}
-            type="button"
-            onClick={() => onRemoveChip(chip.key)}
-            className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-200"
-          >
-            {chip.label}
-            <X className="w-3 h-3" />
-          </button>
-        ))}
-        {activeChips.length > 0 && (
-          <button
-            type="button"
-            onClick={clearAll}
-            className="text-xs font-semibold text-emerald-700 hover:text-emerald-800"
-          >
-            Clear all
-          </button>
-        )}
-      </div>
     </div>
   );
 }
@@ -719,27 +552,12 @@ function ProductCard({ product, onAdd }) {
   );
 }
 
-function Pagination({ canLoadMore, onLoadMore }) {
-  if (!canLoadMore) return null;
-  return (
-    <div className="mt-6 flex justify-center">
-      <button
-        type="button"
-        onClick={onLoadMore}
-        className="rounded-xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-      >
-        Load more
-      </button>
-    </div>
-  );
-}
-
 function EmptyState({ onReset }) {
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center">
       <h3 className="text-lg font-semibold text-slate-900">No results found</h3>
       <p className="mt-2 text-sm text-slate-600">
-        Try adjusting your filters or search for a different product.
+        Try adjusting your filters to see more products.
       </p>
       <button
         type="button"
