@@ -8,6 +8,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
     const topNav = useMemo(
         () => [
             "Home",
+            "All Products",
             "Smartphones",
             "Laptops",
             "Tablets",
@@ -40,7 +41,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
 
     const getNavHref = (item) => {
         if (item === "Home") return "/";
-        if (item === "Deals") return "/products";
+        if (item === "All Products") return "/products";
         return `/products?category=${encodeURIComponent(item)}`;
     };
 
