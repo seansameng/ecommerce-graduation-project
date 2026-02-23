@@ -24,6 +24,8 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product, qty = 1) => {
         if (!product) return;
+        if (typeof product.stock === "number" && product.stock <= 0) return;
+        if (product.status && String(product.status).toUpperCase() !== "ACTIVE") return;
 
         const id = product.id ?? product.name; // fallback for demo data
         setItems((prev) => {
