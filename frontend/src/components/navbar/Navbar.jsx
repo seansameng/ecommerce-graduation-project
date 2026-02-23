@@ -7,6 +7,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
 
     const topNav = useMemo(
         () => [
+            "Home",
             "Smartphones",
             "Laptops",
             "Tablets",
