@@ -58,6 +58,8 @@ public class ProductServiceImpl implements ProductService {
                 .stock(productRequest.getStock())
                 .description(productRequest.getDescription())
                 .imageUrl(productRequest.getImageUrl())
+                .sku(productRequest.getSku())
+                .status(productRequest.getStatus())
                 .category(category)
                 .build();
 
@@ -76,6 +78,8 @@ public class ProductServiceImpl implements ProductService {
         product.setStock(productRequest.getStock());
         product.setDescription(productRequest.getDescription());
         product.setImageUrl(productRequest.getImageUrl());
+        product.setSku(productRequest.getSku());
+        product.setStatus(productRequest.getStatus());
         product.setCategory(category);
 
         return toResponse(productRepository.save(product));
@@ -105,6 +109,10 @@ public class ProductServiceImpl implements ProductService {
         response.setStock(product.getStock());
         response.setImageUrl(product.getImageUrl());
         response.setDescription(product.getDescription());
+        response.setSku(product.getSku());
+        if (product.getStatus() != null) {
+            response.setStatus(product.getStatus().name());
+        }
         if (product.getCategory() != null) {
             response.setCategory(product.getCategory().getName());
         }
