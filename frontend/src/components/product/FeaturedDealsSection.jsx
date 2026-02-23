@@ -9,7 +9,18 @@ function ProductCard({ product, onAdd, onView }) {
   const discount = product.tag || product.discount;
 
   return (
-    <div className="group overflow-hidden rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onView}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onView();
+        }
+      }}
+      className="group overflow-hidden rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+    >
       <div className="relative">
         <img
           src={imageSrc}
@@ -30,7 +41,7 @@ function ProductCard({ product, onAdd, onView }) {
         </div>
 
         <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-          <span>â­ {product.rating ?? 4.6}</span>
+          <span>Rating {product.rating ?? 4.6}</span>
           <span>({product.reviews ?? 120})</span>
         </div>
 
@@ -60,17 +71,13 @@ function ProductCard({ product, onAdd, onView }) {
 
         <button
           type="button"
-          onClick={onAdd}
+          onClick={(event) => {
+            event.stopPropagation();
+            onAdd();
+          }}
           className="mt-3 w-full rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-500 group-hover:scale-[1.01] transform-gpu"
         >
           Add to Cart
-        </button>
-        <button
-          type="button"
-          onClick={onView}
-          className="mt-2 w-full text-xs font-semibold text-slate-600 hover:text-slate-900"
-        >
-          Details â†’
         </button>
       </div>
     </div>
@@ -100,7 +107,7 @@ export default function FeaturedDealsSection({ featuredDeals = [] }) {
           onClick={() => navigate("/products")}
           className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
         >
-          See all deals â†’
+          See all deals ->
         </button>
       </div>
 
