@@ -259,6 +259,7 @@ export default function Product() {
             category: product?.category?.name || product?.category || "Accessories",
             brand: product.brand || "ShopEase",
             stock: Number(product.stock ?? 12),
+            status: product.status ? String(product.status).toUpperCase() : "ACTIVE",
             shipping: "Free shipping",
             imageUrl: product.imageUrl || FALLBACK_IMAGE,
           };
@@ -466,6 +467,8 @@ export default function Product() {
                       name: product.name,
                       price: product.price,
                       imageUrl: product.imageUrl || FALLBACK_IMAGE,
+                      stock: product.stock,
+                      status: product.status,
                     })
                   }
                 />
@@ -802,6 +805,8 @@ function ProductGrid({ products, onAdd }) {
 function ProductCard({ product, onAdd }) {
   const [loaded, setLoaded] = useState(false);
   const inStock = product.stock > 0;
+  const isActive = !product.status || String(product.status).toUpperCase() === "ACTIVE";
+  const canAddToCart = inStock && isActive;
 
   return (
     <div className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
@@ -849,8 +854,12 @@ function ProductCard({ product, onAdd }) {
           <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-600">
             {product.shipping || "Free shipping"}
           </span>
-          <span className={`font-semibold ${inStock ? "text-emerald-700" : "text-amber-600"}`}>
-            {inStock ? "In stock" : "Low stock"}
+          <span
+            className={`font-semibold ${
+              canAddToCart ? "text-emerald-700" : "text-rose-600"
+            }`}
+          >
+            {canAddToCart ? "In stock" : inStock ? "Unavailable" : "Out of stock"}
           </span>
         </div>
 
@@ -858,11 +867,16 @@ function ProductCard({ product, onAdd }) {
           <button
             type="button"
             onClick={onAdd}
-            className="w-full rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-500"
+            disabled={!canAddToCart}
+            className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+              canAddToCart
+                ? "bg-emerald-600 hover:bg-emerald-700"
+                : "cursor-not-allowed bg-slate-300"
+            }`}
           >
             <span className="inline-flex items-center justify-center gap-2">
               <ShoppingCart className="w-4 h-4" />
-              Add to Cart
+              {canAddToCart ? "Add to Cart" : "Unavailable"}
             </span>
           </button>
           <Link to={`/products/${product.id}`} className="mt-2 block text-center text-xs font-semibold text-slate-600">
