@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiTag } from "react-icons/fi";
+import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiTag, FiX } from "react-icons/fi";
 import {
     getCategories,
     createCategory,
@@ -239,15 +239,19 @@ export default function CategoryManagement() {
                                                 <div className="flex justify-end gap-2">
                                                     <button
                                                         onClick={() => openEdit(c)}
-                                                        className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50 transition"
+                                                        className="inline-flex items-center justify-center rounded-xl border border-gray-200 h-9 w-9 text-gray-700 hover:bg-gray-50 transition"
+                                                        aria-label="Edit category"
+                                                        title="Edit"
                                                     >
-                                                        <FiEdit2 /> Edit
+                                                        <FiEdit2 />
                                                     </button>
                                                     <button
                                                         onClick={() => handleDelete(c.id)}
-                                                        className="inline-flex items-center gap-2 rounded-xl border border-red-200 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-50 transition"
+                                                        className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
+                                                        aria-label="Delete category"
+                                                        title="Delete"
                                                     >
-                                                        <FiTrash2 /> Delete
+                                                        <FiTrash2 />
                                                     </button>
                                                 </div>
                                             </td>
@@ -282,9 +286,11 @@ export default function CategoryManagement() {
                                 </div>
                                 <button
                                     onClick={closeModal}
-                                    className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50"
+                                    className="h-9 w-9 rounded-xl border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50"
+                                    aria-label="Close"
+                                    title="Close"
                                 >
-                                    Close
+                                    <FiX />
                                 </button>
                             </div>
 
