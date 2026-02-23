@@ -287,20 +287,23 @@ const UserManagement = () => {
                                                 <div className="flex justify-end gap-2">
                                                     <button
                                                         onClick={() => toggleBlock(u.id)}
-                                                        className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold border transition ${u.status === "BLOCKED"
+                                                        className={`inline-flex items-center justify-center rounded-xl h-9 w-9 text-xs font-bold border transition ${u.status === "BLOCKED"
                                                                 ? "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
                                                                 : "border-amber-200 text-amber-700 hover:bg-amber-50"
                                                             }`}
+                                                        aria-label={u.status === "BLOCKED" ? "Unblock user" : "Block user"}
+                                                        title={u.status === "BLOCKED" ? "Unblock" : "Block"}
                                                     >
                                                         {u.status === "BLOCKED" ? <FiUnlock /> : <FiLock />}
-                                                        {u.status === "BLOCKED" ? "Unblock" : "Block"}
                                                     </button>
 
                                                     <button
                                                         onClick={() => removeUser(u.id)}
-                                                        className="inline-flex items-center gap-2 rounded-xl border border-red-200 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-50 transition"
+                                                        className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
+                                                        aria-label="Delete user"
+                                                        title="Delete"
                                                     >
-                                                        <FiTrash2 /> Delete
+                                                        <FiTrash2 />
                                                     </button>
                                                 </div>
                                             </td>
