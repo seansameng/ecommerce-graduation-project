@@ -10,5 +10,7 @@ public class ProductResponse {
     private Integer stock;
     private String imageUrl;
     private String description;
+    private String sku;
+    private String status;
     private String category;
 }
