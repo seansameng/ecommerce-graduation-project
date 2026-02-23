@@ -54,7 +54,7 @@ export default function HeroSection({ featuredDeals = [] }) {
           <div className="relative">
             <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Editorâ€™s Picks
+                Editors Picks
               </div>
               <div className="mt-4 space-y-3">
                 {picks.map((deal) => (
@@ -72,7 +72,7 @@ export default function HeroSection({ featuredDeals = [] }) {
                       <div className="text-xs font-semibold text-slate-500">{deal.category}</div>
                       <div className="truncate text-sm font-semibold text-slate-900">{deal.name}</div>
                       <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
-                        <span>â­ {deal.rating ?? 4.6}</span>
+                        <span>Rating {deal.rating ?? 4.6}</span>
                         <span>({deal.reviews ?? 120})</span>
                       </div>
                     </div>
