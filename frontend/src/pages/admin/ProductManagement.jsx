@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiImage } from "react-icons/fi";
+import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiImage, FiX } from "react-icons/fi";
 import {
     getProducts,
     createProduct,
@@ -398,15 +398,19 @@ export default function AdminProducts() {
                                                     <div className="flex justify-end gap-2">
                                                         <button
                                                             onClick={() => openEdit(p)}
-                                                            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50 transition"
+                                                            className="inline-flex items-center justify-center rounded-xl border border-gray-200 h-9 w-9 text-gray-700 hover:bg-gray-50 transition"
+                                                            aria-label="Edit product"
+                                                            title="Edit"
                                                         >
-                                                            <FiEdit2 /> Edit
+                                                            <FiEdit2 />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDelete(p.id)}
-                                                            className="inline-flex items-center gap-2 rounded-xl border border-red-200 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-50 transition"
+                                                            className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
+                                                            aria-label="Delete product"
+                                                            title="Delete"
                                                         >
-                                                            <FiTrash2 /> Delete
+                                                            <FiTrash2 />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -432,8 +436,8 @@ export default function AdminProducts() {
             {open && (
                 <div className="fixed inset-0 z-50">
                     <div className="absolute inset-0 bg-black/40" onClick={closeModal} />
-                    <div className="absolute inset-0 flex items-center justify-center p-4">
-                        <div className="w-full max-w-2xl rounded-2xl bg-white border border-gray-200 shadow-xl overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                        <div className="w-full max-w-xl rounded-2xl bg-white border border-gray-200 shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
                             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                                 <div>
                                     <p className="text-xs text-gray-400">Product</p>
@@ -443,13 +447,15 @@ export default function AdminProducts() {
                                 </div>
                                 <button
                                     onClick={closeModal}
-                                    className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50"
+                                    className="h-9 w-9 rounded-xl border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50"
+                                    aria-label="Close"
+                                    title="Close"
                                 >
-                                    Close
+                                    <FiX />
                                 </button>
                             </div>
 
-                            <div className="p-6">
+                            <div className="p-6 overflow-y-auto">
                                 {formErr && (
                                     <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                         {formErr}
