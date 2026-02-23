@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import useCart from "../../hooks/useCart";
 
 const FALLBACK_IMAGE =
@@ -30,7 +30,7 @@ function ProductCard({ product, onAdd, onView }) {
         </div>
 
         <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-          <span>⭐ {product.rating ?? 4.6}</span>
+          <span>â­ {product.rating ?? 4.6}</span>
           <span>({product.reviews ?? 120})</span>
         </div>
 
@@ -70,7 +70,7 @@ function ProductCard({ product, onAdd, onView }) {
           onClick={onView}
           className="mt-2 w-full text-xs font-semibold text-slate-600 hover:text-slate-900"
         >
-          Details →
+          Details â†’
         </button>
       </div>
     </div>
@@ -100,7 +100,7 @@ export default function FeaturedDealsSection({ featuredDeals = [] }) {
           onClick={() => navigate("/products")}
           className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
         >
-          See all deals →
+          See all deals â†’
         </button>
       </div>
 
