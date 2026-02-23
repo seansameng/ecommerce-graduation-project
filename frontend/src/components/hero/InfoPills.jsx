@@ -1,4 +1,4 @@
-import { FiTruck, FiShield, FiHeadphones, FiRepeat } from "react-icons/fi";
+﻿import { FiTruck, FiShield, FiHeadphones, FiRepeat } from "react-icons/fi";
 
 const pills = [
   { title: "Free Shipping", desc: "On orders over $50", icon: FiTruck },
