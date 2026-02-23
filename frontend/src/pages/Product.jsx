@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Filter, Search, ShoppingCart, X } from "lucide-react";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
@@ -9,190 +9,7 @@ import useCart from "../hooks/useCart";
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop";
 
-/*
-const DUMMY_PRODUCTS = [
-  {
-    id: "se-01",
-    name: "ShopEase X1 Pro Ultrabook 14”",
-    description: "Ultra-thin performance with all-day battery.",
-    price: 1099,
-    oldPrice: 1299,
-    discount: "-15%",
-    rating: 4.7,
-    reviews: 212,
-    category: "Laptops",
-    brand: "ShopEase",
-    stock: 18,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-02",
-    name: "AeroSound ANC Wireless Headphones",
-    description: "Noise cancellation with studio-grade clarity.",
-    price: 179,
-    oldPrice: 229,
-    discount: "-22%",
-    rating: 4.5,
-    reviews: 94,
-    category: "Audio",
-    brand: "AeroSound",
-    stock: 6,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1518443895914-25f2f7a1c1c5?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-03",
-    name: "Photon Mini 4K Action Camera",
-    description: "Waterproof, stabilization, 4K capture.",
-    price: 249,
-    oldPrice: null,
-    discount: "",
-    rating: 4.4,
-    reviews: 61,
-    category: "Cameras",
-    brand: "Photon",
-    stock: 24,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-04",
-    name: "PulseFit S3 Smartwatch",
-    description: "Health tracking, GPS, and 7‑day battery.",
-    price: 199,
-    oldPrice: 249,
-    discount: "-20%",
-    rating: 4.6,
-    reviews: 128,
-    category: "Wearables",
-    brand: "PulseFit",
-    stock: 12,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-05",
-    name: "ZenPhone Pro Max 6.8”",
-    description: "Flagship camera and ultra-smooth display.",
-    price: 999,
-    oldPrice: 1099,
-    discount: "-9%",
-    rating: 4.8,
-    reviews: 315,
-    category: "Phones",
-    brand: "ZenPhone",
-    stock: 8,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-06",
-    name: "Dock+ 8‑in‑1 USB‑C Hub",
-    description: "Power delivery, HDMI, and SD expansion.",
-    price: 59,
-    oldPrice: null,
-    discount: "",
-    rating: 4.2,
-    reviews: 42,
-    category: "Accessories",
-    brand: "Dock+",
-    stock: 42,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-07",
-    name: "Nebula 12” Tablet + Keyboard",
-    description: "Work-ready tablet with premium keyboard.",
-    price: 499,
-    oldPrice: 549,
-    discount: "-9%",
-    rating: 4.5,
-    reviews: 73,
-    category: "Tablets",
-    brand: "Nebula",
-    stock: 10,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-08",
-    name: "LumaSound Compact Speaker",
-    description: "360° sound with deep bass.",
-    price: 89,
-    oldPrice: 109,
-    discount: "-18%",
-    rating: 4.3,
-    reviews: 57,
-    category: "Audio",
-    brand: "LumaSound",
-    stock: 15,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1518443895914-25f2f7a1c1c5?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-09",
-    name: "VisionAir 4K Monitor 27”",
-    description: "Color-accurate 4K panel with HDR.",
-    price: 429,
-    oldPrice: 479,
-    discount: "-10%",
-    rating: 4.6,
-    reviews: 88,
-    category: "Accessories",
-    brand: "VisionAir",
-    stock: 20,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1527443224154-9f69b0f0a09f?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-10",
-    name: "Orion Pro DSLR Kit",
-    description: "Complete kit with lens + bag bundle.",
-    price: 1199,
-    oldPrice: 1349,
-    discount: "-11%",
-    rating: 4.7,
-    reviews: 152,
-    category: "Cameras",
-    brand: "Orion",
-    stock: 4,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-11",
-    name: "PulseFit Bands Set",
-    description: "Soft‑touch sport bands (3 pack).",
-    price: 29,
-    oldPrice: null,
-    discount: "",
-    rating: 4.1,
-    reviews: 36,
-    category: "Wearables",
-    brand: "PulseFit",
-    stock: 50,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=60",
-  },
-  {
-    id: "se-12",
-    name: "Core i9 Creator Laptop 16”",
-    description: "High‑performance build for creators.",
-    price: 1899,
-    oldPrice: 2099,
-    discount: "-10%",
-    rating: 4.8,
-    reviews: 203,
-    category: "Laptops",
-    brand: "CoreTech",
-    stock: 7,
-    shipping: "Free shipping",
-    imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=60",
-  },
-];
-*/
+
 
 const SORT_OPTIONS = [
   { value: "best", label: "Best match" },
@@ -372,7 +189,7 @@ export default function Product() {
     ) {
       chips.push({
         key: "price",
-        label: `Price: $${filters.priceMin}–$${filters.priceMax}`,
+        label: `Price: $${filters.priceMin}ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“$${filters.priceMax}`,
       });
     }
     return chips;
@@ -390,7 +207,7 @@ export default function Product() {
         brand={{ name: "ShopEase", href: "/" }}
       />
 
-      <section className="border-b border-slate-200/60 bg-white">
+      {/* <section className="border-b border-slate-200/60 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-10">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -409,7 +226,7 @@ export default function Product() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-6">
         <PLPToolbar
@@ -619,9 +436,8 @@ function FilterDrawer({
         onClick={onClose}
       />
       <div
-        className={`absolute bottom-0 left-0 right-0 rounded-t-3xl bg-white p-5 shadow-xl transition-transform ${
-          open ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={`absolute bottom-0 left-0 right-0 rounded-t-3xl bg-white p-5 shadow-xl transition-transform ${open ? "translate-y-0" : "translate-y-full"
+          }`}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Filters</h3>
@@ -755,11 +571,10 @@ function FilterControls({ categories, brands, filters, priceBounds, onChange }) 
               key={value}
               type="button"
               onClick={() => onChange((prev) => ({ ...prev, rating: value }))}
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                filters.rating === value
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${filters.rating === value
                   ? "bg-emerald-600 text-white"
                   : "bg-slate-100 text-slate-600"
-              }`}
+                }`}
             >
               {value}+ stars
             </button>
@@ -804,21 +619,35 @@ function ProductGrid({ products, onAdd }) {
 
 function ProductCard({ product, onAdd }) {
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
   const inStock = product.stock > 0;
   const isActive = !product.status || String(product.status).toUpperCase() === "ACTIVE";
   const canAddToCart = inStock && isActive;
 
   return (
-    <div className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => navigate(`/products/${product.id}`)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          navigate(`/products/${product.id}`);
+        }
+      }}
+      className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+    >
       <div className="relative">
         {!loaded && <div className="absolute inset-0 animate-pulse rounded-2xl bg-slate-100" />}
-        <img
-          src={product.imageUrl || FALLBACK_IMAGE}
-          alt={product.name}
-          className={`aspect-square w-full rounded-2xl object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-        />
+        <Link to={`/products/${product.id}`} className="block" onClick={(event) => event.stopPropagation()}>
+          <img
+            src={product.imageUrl || FALLBACK_IMAGE}
+            alt={product.name}
+            className={`aspect-square w-full rounded-2xl object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+          />
+        </Link>
         {product.discount ? (
           <span className="absolute left-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white">
             {product.discount}
@@ -827,15 +656,19 @@ function ProductCard({ product, onAdd }) {
       </div>
 
       <div className="mt-3 flex flex-1 flex-col">
-        <div className="min-h-[40px] text-sm font-semibold text-slate-900 line-clamp-2">
+        <Link
+          to={`/products/${product.id}`}
+          onClick={(event) => event.stopPropagation()}
+          className="min-h-[40px] text-sm font-semibold text-slate-900 line-clamp-2 hover:text-emerald-700"
+        >
           {product.name}
-        </div>
+        </Link>
         <div className="mt-1 text-xs text-slate-500 line-clamp-2 min-h-[32px]">
           {product.description}
         </div>
 
         <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-          <span>⭐ {product.rating}</span>
+          <span>Rating {product.rating}</span>
           <span>({product.reviews})</span>
         </div>
 
@@ -855,9 +688,8 @@ function ProductCard({ product, onAdd }) {
             {product.shipping || "Free shipping"}
           </span>
           <span
-            className={`font-semibold ${
-              canAddToCart ? "text-emerald-700" : "text-rose-600"
-            }`}
+            className={`font-semibold ${canAddToCart ? "text-emerald-700" : "text-rose-600"
+              }`}
           >
             {canAddToCart ? "In stock" : inStock ? "Unavailable" : "Out of stock"}
           </span>
@@ -866,22 +698,21 @@ function ProductCard({ product, onAdd }) {
         <div className="mt-auto pt-4">
           <button
             type="button"
-            onClick={onAdd}
+            onClick={(event) => {
+              event.stopPropagation();
+              onAdd();
+            }}
             disabled={!canAddToCart}
-            className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-emerald-500 ${
-              canAddToCart
+            className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition focus-visible:ring-2 focus-visible:ring-emerald-500 ${canAddToCart
                 ? "bg-emerald-600 hover:bg-emerald-700"
                 : "cursor-not-allowed bg-slate-300"
-            }`}
+              }`}
           >
             <span className="inline-flex items-center justify-center gap-2">
               <ShoppingCart className="w-4 h-4" />
               {canAddToCart ? "Add to Cart" : "Unavailable"}
             </span>
           </button>
-          <Link to={`/products/${product.id}`} className="mt-2 block text-center text-xs font-semibold text-slate-600">
-            Details →
-          </Link>
         </div>
       </div>
     </div>
