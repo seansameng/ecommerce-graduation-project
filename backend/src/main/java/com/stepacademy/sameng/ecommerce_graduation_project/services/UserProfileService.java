@@ -7,6 +7,4 @@ public interface UserProfileService {
     UserResponse getCurrentUser(Long userId);
 
     UserResponse updateCurrentUser(Long userId, UpdateProfileRequest request);
-
-    void changePassword(Long userId, String currentPassword, String newPassword);
 }
