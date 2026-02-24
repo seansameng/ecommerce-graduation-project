@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.user.UpdateProfileRequest;
-import com.stepacademy.sameng.ecommerce_graduation_project.dtos.user.ChangePasswordRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.user.UserResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.services.UserProfileService;
 
@@ -36,11 +35,4 @@ public class UserProfileController {
         return userProfileService.updateCurrentUser(userId, request);
     }
 
-    @PutMapping("/me/password")
-    public void changePassword(
-            Authentication authentication,
-            @Valid @RequestBody ChangePasswordRequest request) {
-        Long userId = (Long) authentication.getPrincipal();
-        userProfileService.changePassword(userId, request.getCurrentPassword(), request.getNewPassword());
-    }
 }
