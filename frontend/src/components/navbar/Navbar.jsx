@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import { getMyProfile } from "../../api/userApi";
 import { logout } from "../../api/authApi";
 
 export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEase", href: "/" } }) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const isHome = location.pathname === "/";
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showAccountMenu, setShowAccountMenu] = useState(false);
     const [isAuthed, setIsAuthed] = useState(() => Boolean(localStorage.getItem("authToken")));
@@ -217,7 +219,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                             aria-label="View cart"
                         >
                             <FiShoppingCart className="text-slate-500" />
-                            {cartCount > 0 && (
+                            {!isHome && cartCount > 0 && (
                                 <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-emerald-500 text-[11px] font-bold text-white">
                                     {cartCount}
                                 </span>
