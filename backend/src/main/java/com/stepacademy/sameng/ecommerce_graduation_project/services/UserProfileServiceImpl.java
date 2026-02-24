@@ -38,17 +38,6 @@ public class UserProfileServiceImpl implements UserProfileService {
         return toResponse(saved);
     }
 
-    @Override
-    @Transactional
-    public void changePassword(Long userId, String currentPassword, String newPassword) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if (currentPassword == null || !currentPassword.equals(user.getPassword())) {
-            throw new RuntimeException("Current password is incorrect");
-        }
-        user.setPassword(newPassword);
-        userRepository.save(user);
-    }
 
     private static UserResponse toResponse(User user) {
         String createdAt = user.getCreatedAt() != null ? user.getCreatedAt().format(FORMATTER) : null;
