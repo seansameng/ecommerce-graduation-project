@@ -28,7 +28,6 @@ export default function Product() {
 
   const [filters, setFilters] = useState({
     category: categoryFromUrl || "All",
-    brand: "All",
     rating: 0,
     availability: "all",
     priceMin: 0,
@@ -90,11 +89,6 @@ export default function Product() {
     return ["All", ...Array.from(set)];
   }, [allProducts]);
 
-  const brands = useMemo(() => {
-    const set = new Set(allProducts.map((p) => p.brand).filter(Boolean));
-    return ["All", ...Array.from(set)];
-  }, [allProducts]);
-
   const priceBounds = useMemo(() => {
     if (allProducts.length === 0) return { min: 0, max: 2000 };
     const prices = allProducts.map((p) => Number(p.price || 0));
@@ -117,7 +111,6 @@ export default function Product() {
         if (!haystack.includes(term)) return false;
       }
       if (filters.category !== "All" && p.category !== filters.category) return false;
-      if (filters.brand !== "All" && p.brand !== filters.brand) return false;
       if (p.price < filters.priceMin || p.price > filters.priceMax) return false;
       if (filters.rating > 0 && p.rating < filters.rating) return false;
       if (filters.availability === "in" && p.stock <= 0) return false;
@@ -128,7 +121,6 @@ export default function Product() {
   const clearAllFilters = () => {
     setFilters({
       category: "All",
-      brand: "All",
       rating: 0,
       availability: "all",
       priceMin: priceBounds.min,
@@ -185,7 +177,6 @@ export default function Product() {
         <div className="mt-6 grid gap-6 lg:grid-cols-[260px_1fr]">
           <FilterSidebar
             categories={categories}
-            brands={brands}
             filters={filters}
             priceBounds={priceBounds}
             onChange={setFilters}
@@ -224,7 +215,6 @@ export default function Product() {
         open={showFilters}
         onClose={() => setShowFilters(false)}
         categories={categories}
-        brands={brands}
         filters={filters}
         priceBounds={priceBounds}
         onChange={setFilters}
@@ -236,13 +226,12 @@ export default function Product() {
   );
 }
 
-function FilterSidebar({ categories, brands, filters, priceBounds, onChange }) {
+function FilterSidebar({ categories, filters, priceBounds, onChange }) {
   return (
     <div className="hidden lg:block">
       <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sticky top-24">
         <FilterControls
           categories={categories}
-          brands={brands}
           filters={filters}
           priceBounds={priceBounds}
           onChange={onChange}
@@ -256,7 +245,6 @@ function FilterDrawer({
   open,
   onClose,
   categories,
-  brands,
   filters,
   priceBounds,
   onChange,
@@ -281,7 +269,6 @@ function FilterDrawer({
         <div className="mt-4 max-h-[65vh] overflow-y-auto pr-2">
           <FilterControls
             categories={categories}
-            brands={brands}
             filters={filters}
             priceBounds={priceBounds}
             onChange={onChange}
@@ -308,7 +295,7 @@ function FilterDrawer({
   );
 }
 
-function FilterControls({ categories, brands, filters, priceBounds, onChange }) {
+function FilterControls({ categories, filters, priceBounds, onChange }) {
   return (
     <div className="space-y-6 text-sm">
       <div>
@@ -325,25 +312,6 @@ function FilterControls({ categories, brands, filters, priceBounds, onChange }) 
                 onChange={() => onChange((prev) => ({ ...prev, category: cat }))}
               />
               {cat}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
-          Brand
-        </div>
-        <div className="space-y-2">
-          {brands.map((brand) => (
-            <label key={brand} className="flex items-center gap-2 text-slate-700">
-              <input
-                type="radio"
-                name="brand"
-                checked={filters.brand === brand}
-                onChange={() => onChange((prev) => ({ ...prev, brand }))}
-              />
-              {brand}
             </label>
           ))}
         </div>
