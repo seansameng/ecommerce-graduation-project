@@ -13,7 +13,7 @@ const AdminLayout = ({ title, children }) => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("role");
         localStorage.removeItem("user");
-        navigate("/login");
+        navigate("/");
     };
 
     return (
