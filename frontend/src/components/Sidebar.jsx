@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FiHome, FiUsers, FiBox, FiShoppingBag, FiTag, FiMenu, FiLogOut, FiX } from "react-icons/fi";
+import { FiHome, FiUsers, FiBox, FiShoppingBag, FiTag, FiMenu, FiLogOut, FiX, FiSettings } from "react-icons/fi";
 
 const links = [
   { to: "/admin", label: "Dashboard", icon: FiHome, end: true },
@@ -7,6 +7,7 @@ const links = [
   { to: "/admin/products", label: "Products", icon: FiBox },
   { to: "/admin/categories", label: "Categories", icon: FiTag },
   { to: "/admin/orders", label: "Orders", icon: FiShoppingBag },
+  { to: "/admin/settings", label: "Settings", icon: FiSettings },
 ];
 
 export default function Sidebar({ collapsed, onToggleCollapse, onCloseMobile, onLogout }) {
@@ -34,7 +35,7 @@ export default function Sidebar({ collapsed, onToggleCollapse, onCloseMobile, on
 
         <div className={collapsed ? "hidden" : ""}>
           <div className="text-lg font-extrabold text-gray-900">
-            Admin<span className="text-emerald-600">Panel</span>
+            Shop<span className="text-emerald-600">Ease</span>
           </div>
           <p className="mt-1 text-xs text-gray-400">Manage your store</p>
         </div>
