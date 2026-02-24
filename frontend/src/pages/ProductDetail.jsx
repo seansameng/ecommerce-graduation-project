@@ -59,16 +59,6 @@ export default function ProductDetail() {
       <Navbar q={q} setQ={setQ} cartCount={3} brand={{ name: "ShopEase", href: "/" }} />
 
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
-        <div className="flex items-center justify-end text-sm">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="rounded-full border border-slate-200 bg-white/70 px-4 py-1.5 text-xs font-semibold text-slate-600 shadow-sm hover:bg-white"
-          >
-            Go Back
-          </button>
-        </div>
-
         {status === "loading" && (
           <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="aspect-square rounded-3xl bg-white/70 ring-1 ring-slate-200 animate-pulse" />
