@@ -14,6 +14,16 @@ export default function Account() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ fullName: "", email: "", phone: "" });
 
+  const initials = useMemo(() => {
+    const name = (form.fullName || "").trim();
+    if (name) {
+      const parts = name.split(/\s+/).slice(0, 2);
+      return parts.map((part) => part[0]?.toUpperCase()).join("");
+    }
+    const email = (form.email || "").trim();
+    return email ? email[0].toUpperCase() : "U";
+  }, [form.email, form.fullName]);
+
   const hasToken = useMemo(() => Boolean(localStorage.getItem("authToken")), []);
 
   useEffect(() => {
@@ -65,6 +75,7 @@ export default function Account() {
       });
   };
 
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
@@ -99,6 +110,15 @@ export default function Account() {
 
             {status !== "loading" && (
               <form onSubmit={onSubmit} className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-lg font-semibold text-emerald-700">
+                    {initials}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-slate-900">{form.fullName || "User"}</div>
+                    <div className="text-xs text-slate-500">{form.email || "No email"}</div>
+                  </div>
+                </div>
                 <div>
                   <label className="text-sm font-semibold text-slate-700">Full name</label>
                   <input
