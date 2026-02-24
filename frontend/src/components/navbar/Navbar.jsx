@@ -1,10 +1,52 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
+import { getMyProfile } from "../../api/userApi";
+import { logout } from "../../api/authApi";
 
 export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEase", href: "/" } }) {
+    const navigate = useNavigate();
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showAccountMenu, setShowAccountMenu] = useState(false);
+    const [isAuthed, setIsAuthed] = useState(() => Boolean(localStorage.getItem("authToken")));
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        const onStorage = () => {
+            setIsAuthed(Boolean(localStorage.getItem("authToken")));
+        };
+        window.addEventListener("storage", onStorage);
+        return () => window.removeEventListener("storage", onStorage);
+    }, []);
+
+    const handleLogout = () => {
+        logout();
+        setIsAuthed(false);
+        setUserName("");
+        setShowAccountMenu(false);
+        navigate("/");
+    };
+
+    useEffect(() => {
+        if (!isAuthed) {
+            setUserName("");
+            return;
+        }
+        let ignore = false;
+        getMyProfile()
+            .then((res) => {
+                if (ignore) return;
+                const data = res?.data || {};
+                setUserName(data.fullName || data.email || "Account");
+            })
+            .catch(() => {
+                if (ignore) return;
+                setUserName("Account");
+            });
+        return () => {
+            ignore = true;
+        };
+    }, [isAuthed]);
 
     const topNav = useMemo(
         () => [
@@ -91,22 +133,24 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                                         key={item}
                                         type="button"
                                         onMouseDown={() => setQ(item)}
-                                    className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                                >
-                                    <span>{item}</span>
-                                </button>
+                                        className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                                    >
+                                        <span>{item}</span>
+                                    </button>
                                 ))}
                             </div>
                         ) : null}
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Link
-                            to="/login"
-                            className="hidden sm:inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-emerald-500"
-                        >
-                            Sign In
-                        </Link>
+                        {isAuthed ? (
+                            <Link
+                                to="/account"
+                                className="hidden sm:inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-emerald-500"
+                            >
+                                {userName || "Account"}
+                            </Link>
+                        ) : null}
 
                         <div className="relative">
                             <button
@@ -123,34 +167,46 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                                     className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1 shadow-lg"
                                     onMouseLeave={() => setShowAccountMenu(false)}
                                 >
-                                    <Link
-                                        to="/account"
-                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                                        onClick={() => setShowAccountMenu(false)}
-                                    >
-                                        Profile
-                                    </Link>
-                                    <Link
-                                        to="/orders"
-                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                                        onClick={() => setShowAccountMenu(false)}
-                                    >
-                                        Orders
-                                    </Link>
-                                    <Link
-                                        to="/settings"
-                                        className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                                        onClick={() => setShowAccountMenu(false)}
-                                    >
-                                        Settings
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="w-full rounded-lg px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
-                                        onClick={() => setShowAccountMenu(false)}
-                                    >
-                                        Logout
-                                    </button>
+                                    {isAuthed ? (
+                                        <>
+                                            <Link
+                                                to="/account"
+                                                className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                                onClick={() => setShowAccountMenu(false)}
+                                            >
+                                                Profile
+                                            </Link>
+                                            <Link
+                                                to="/orders"
+                                                className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                                onClick={() => setShowAccountMenu(false)}
+                                            >
+                                                Orders
+                                            </Link>
+                                            <Link
+                                                to="/settings"
+                                                className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                                onClick={() => setShowAccountMenu(false)}
+                                            >
+                                                Settings
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                className="w-full rounded-lg px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <Link
+                                            to="/login"
+                                            className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                                            onClick={() => setShowAccountMenu(false)}
+                                        >
+                                            Sign In
+                                        </Link>
+                                    )}
                                 </div>
                             ) : null}
                         </div>
@@ -184,8 +240,8 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                     ))}
                 </nav>
 
-                    {/* Mobile Search */}
-                    <div className="md:hidden pb-3">
+                {/* Mobile Search */}
+                <div className="md:hidden pb-3">
                     <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-2 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
                         <FiSearch className="text-slate-400" />
                         <input
