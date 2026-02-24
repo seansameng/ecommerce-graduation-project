@@ -24,10 +24,13 @@ export default function AdminDashboard() {
         Promise.all([getProducts(), getUsers(), getOrders(), getCategories()])
             .then(([productsRes, usersRes, ordersRes, categoriesRes]) => {
                 if (!mounted) return;
+                const products = Array.isArray(productsRes?.data) ? productsRes.data : [];
+                const users = Array.isArray(usersRes?.data) ? usersRes.data : [];
+                const orders = Array.isArray(ordersRes?.data) ? ordersRes.data : [];
                 setCounts({
-                    products: Array.isArray(productsRes?.data) ? productsRes.data.length : 0,
-                    users: Array.isArray(usersRes?.data) ? usersRes.data.length : 0,
-                    orders: Array.isArray(ordersRes?.data) ? ordersRes.data.length : 0,
+                    products: products.length,
+                    users: users.length,
+                    orders: orders.length,
                     categories: Array.isArray(categoriesRes?.data) ? categoriesRes.data.length : 0,
                 });
             })
@@ -102,6 +105,7 @@ export default function AdminDashboard() {
                     iconBg="bg-emerald-100 text-emerald-700"
                 />
             </div>
+
         </div>
     );
 }
