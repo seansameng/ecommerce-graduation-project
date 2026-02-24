@@ -21,6 +21,7 @@ import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import OrderDetail from "./pages/admin/OrderDetail";
 import CategoryManagement from "./pages/admin/CategoryManagement";
+import AdminSettings from "./pages/admin/AdminSettings";
 import CartPage from "./pages/Cart";
 // later: ProductManagement, OrderManagement
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="categories" element={<CategoryManagement />} />
           <Route path="orders" element={<OrderManagement />} />
           <Route path="orders/:id" element={<OrderDetail />} />
+          <Route path="settings" element={<AdminSettings />} />
 
           {/* 
           <Route path="products" element={<ProductManagement />} />
