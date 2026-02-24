@@ -12,20 +12,20 @@ export default function HeroSection({ featuredDeals = [] }) {
   const picks = featuredDeals.slice(0, 3);
 
   return (
-    <section className="pt-8 md:pt-10">
-      <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white">
-        <div className="absolute -left-10 -top-12 h-44 w-44 rounded-full bg-emerald-200/40 blur-3xl" />
-        <div className="absolute right-0 top-6 h-52 w-52 rounded-full bg-sky-100/60 blur-3xl" />
+    <section className="pt-4 md:pt-6">
+      <div className="relative overflow-hidden rounded-[24px] border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-emerald-100/60">
+        {/* <div className="absolute -left-10 -top-12 h-52 w-52 rounded-full bg-emerald-300/50 blur-3xl" />
+        <div className="absolute right-0 top-6 h-64 w-64 rounded-full bg-emerald-200/40 blur-3xl" /> */}
 
-        <div className="grid gap-8 px-6 py-10 md:px-10 md:py-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div className="grid gap-6 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
             <div className="mb-4">
               <Badge>NEW ARRIVALS</Badge>
             </div>
-            <h1 className="max-w-xl text-3xl font-semibold leading-tight text-slate-900 md:text-5xl">
+            <h1 className="max-w-2xl text-3xl font-semibold leading-tight text-slate-900 md:text-5xl">
               Premium tech that feels fast, clean, and effortless.
             </h1>
-            <p className="mt-4 max-w-lg text-sm text-slate-600 md:text-base">
+            <p className="mt-4 max-w-xl text-sm text-slate-600 md:text-base">
               ShopEase curates trusted devices with clear pricing, fast delivery, and dependable support.
             </p>
 
@@ -36,19 +36,19 @@ export default function HeroSection({ featuredDeals = [] }) {
               >
                 Shop Now
               </Link>
-              <Link
+              {/* <Link
                 to="/#categories"
                 className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
                 View Categories
-              </Link>
+              </Link> */}
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3 text-xs text-slate-500">
+            {/* <div className="mt-6 flex flex-wrap gap-3 text-xs text-slate-500">
               <span className="rounded-full border border-slate-200 px-3 py-1">Free shipping</span>
               <span className="rounded-full border border-slate-200 px-3 py-1">Easy returns</span>
               <span className="rounded-full border border-slate-200 px-3 py-1">Official warranty</span>
-            </div>
+            </div> */}
           </div>
 
           <div className="relative">
