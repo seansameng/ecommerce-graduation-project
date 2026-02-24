@@ -8,6 +8,9 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Account from "./pages/Account";
+import Orders from "./pages/Orders";
+import Settings from "./pages/Settings";
 
 // Admin
 import AdminRoute from "./routes/AdminRoute";
@@ -33,6 +36,9 @@ function App() {
         <Route path="/order-success/:id" element={<OrderSuccess />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/search" element={<Home />} /> {/* For search results, can be enhanced later */}
         <Route path="/cart" element={<CartPage />} /> {/* Placeholder for Cart page */}
 
