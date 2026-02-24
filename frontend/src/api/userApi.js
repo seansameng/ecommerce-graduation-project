@@ -7,3 +7,7 @@ export const getMyProfile = () => {
 export const updateMyProfile = (data) => {
   return api.put("/users/me", data);
 };
+
+export const changeMyPassword = (data) => {
+  return api.put("/users/me/password", data);
+};
