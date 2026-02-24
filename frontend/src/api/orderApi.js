@@ -8,7 +8,10 @@ export const getOrders = () => {
     return api.get("/orders");
 };
 
+export const getMyOrders = () => {
+    return api.get("/orders/me");
+};
+
 export const getOrderById = (id) => {
     return api.get(`/orders/${id}`);
 };
-
