@@ -1,5 +1,16 @@
 import { NavLink } from "react-router-dom";
-import { FiHome, FiUsers, FiBox, FiShoppingBag, FiTag, FiMenu, FiLogOut, FiX, FiSettings } from "react-icons/fi";
+import {
+  FiHome,
+  FiUsers,
+  FiBox,
+  FiShoppingBag,
+  FiTag,
+  FiMenu,
+  FiLogOut,
+  FiX,
+  FiSettings,
+  FiExternalLink,
+} from "react-icons/fi";
 
 const links = [
   { to: "/admin", label: "Dashboard", icon: FiHome, end: true },
@@ -77,6 +88,14 @@ export default function Sidebar({ collapsed, onToggleCollapse, onCloseMobile, on
       </nav>
 
       <div className={collapsed ? "px-2 pb-5" : "px-4 pb-5"}>
+        <NavLink
+          to="/"
+          className="mb-3 inline-flex w-full items-center justify-center rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+          title="View Store"
+          aria-label="View Store"
+        >
+          <FiExternalLink />
+        </NavLink>
         <button
           onClick={onLogout}
           className={[
