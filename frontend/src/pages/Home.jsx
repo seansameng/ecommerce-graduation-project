@@ -85,6 +85,17 @@ export default function Home() {
     };
   }, []);
 
+  const normalizedQuery = useMemo(() => q.trim().toLowerCase(), [q]);
+  const hasQuery = normalizedQuery.length > 0;
+  const filteredProducts = useMemo(() => {
+    if (!hasQuery) return products;
+    return products.filter((product) => {
+      const name = String(product.name || "").toLowerCase();
+      const category = String(product.category || "").toLowerCase();
+      return name.includes(normalizedQuery) || category.includes(normalizedQuery);
+    });
+  }, [hasQuery, normalizedQuery, products]);
+
   const featuredDeals = useMemo(() => products.slice(0, 8), [products]);
   const categories = useMemo(() => {
     const map = new Map();
@@ -119,9 +130,34 @@ export default function Home() {
       <main className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8">
         <HeroSection featuredDeals={featuredDeals} />
         {/* <InfoPills /> */}
-        {categories.length > 0 && <CategorySection categories={categories} />}
-        {featuredDeals.length > 0 && <FeaturedDealsSection featuredDeals={featuredDeals} />}
-        {recentlyViewed.length > 0 && <RecentlyViewedSection recentlyViewed={recentlyViewed} />}
+        {hasQuery ? (
+          <section className="mt-12">
+            <div className="flex items-end justify-between">
+              <h2 className="text-xl font-semibold tracking-tight">Search results</h2>
+              <div className="text-sm text-slate-500">
+                {filteredProducts.length} result{filteredProducts.length === 1 ? "" : "s"}
+              </div>
+            </div>
+
+            {filteredProducts.length === 0 ? (
+              <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
+                No products match "{q}". Try a different keyword.
+              </div>
+            ) : (
+              <FeaturedDealsSection
+                featuredDeals={filteredProducts}
+                title="Products"
+                showCta={false}
+              />
+            )}
+          </section>
+        ) : (
+          <>
+            {categories.length > 0 && <CategorySection categories={categories} />}
+            {featuredDeals.length > 0 && <FeaturedDealsSection featuredDeals={featuredDeals} />}
+            {recentlyViewed.length > 0 && <RecentlyViewedSection recentlyViewed={recentlyViewed} />}
+          </>
+        )}
       </main>
 
       <Footer categories={categories} />
