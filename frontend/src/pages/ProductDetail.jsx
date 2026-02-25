@@ -53,7 +53,7 @@ export default function ProductDetail() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#f7f4ee] via-white to-[#f1f5f9] text-slate-900"
+      className="min-h-screen bg-slate-50 text-slate-900"
       style={{ fontFamily: '"Ubuntu", "Segoe UI", sans-serif' }}
     >
       <Navbar q={q} setQ={setQ} cartCount={3} brand={{ name: "ShopEase", href: "/" }} />
@@ -80,8 +80,8 @@ export default function ProductDetail() {
 
         {status === "success" && product && (
           <div className="mt-8 grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[36px] bg-white/80 ring-1 ring-slate-200/70 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.55)] backdrop-blur">
-              <div className="relative overflow-hidden rounded-[34px] bg-gradient-to-br from-emerald-50 via-white to-slate-50 p-6">
+            <div className="rounded-[36px] bg-white ring-1 ring-slate-200/70 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.55)] backdrop-blur">
+              <div className="relative overflow-hidden rounded-[34px] bg-white p-6">
                 <div className="absolute -right-20 -top-24 h-48 w-48 rounded-full bg-emerald-200/40 blur-3xl" />
                 <div className="absolute -left-20 -bottom-24 h-44 w-44 rounded-full bg-slate-200/60 blur-3xl" />
                 <div className="relative rounded-3xl bg-white p-4 ring-1 ring-slate-100">
