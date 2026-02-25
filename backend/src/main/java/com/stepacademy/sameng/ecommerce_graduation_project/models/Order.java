@@ -56,6 +56,9 @@ public class Order {
     @Column(nullable = false, length = 255)
     private String shippingAddress;
 
+    @Column(name = "payment_method", nullable = false, length = 30)
+    private String paymentMethod;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     @Builder.Default
