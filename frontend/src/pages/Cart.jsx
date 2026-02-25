@@ -13,18 +13,54 @@ export default function CartPage() {
 
     const shipping = subtotal > 0 ? 5 : 0; // demo shipping
     const total = subtotal + shipping;
+    const steps = [
+        { id: 1, label: "Cart" },
+        { id: 2, label: "Checkout" },
+        { id: 3, label: "Confirmation" },
+    ];
+    const activeStep = 1;
 
     return (
-        <div className="min-h-screen bg-[#f7f4ee] text-slate-900">
+        <div className="min-h-screen bg-slate-50 text-slate-900">
             <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
 
             <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-                <div className="flex items-end justify-between">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h1 className="text-2xl font-extrabold tracking-tight">Your Cart</h1>
                         <p className="mt-1 text-sm text-slate-500">
                             {cartCount === 0 ? "Cart is empty." : `${cartCount} item(s) in your cart.`}
                         </p>
+                    </div>
+
+                    <div className="flex items-center text-xs font-semibold text-slate-500">
+                        {steps.map((step, index) => {
+                            const isCompleted = step.id < activeStep;
+                            const isActive = step.id === activeStep;
+                            return (
+                                <div key={step.id} className="flex items-center">
+                                    <div className="flex items-center gap-2">
+                                        <div
+                                            className={`h-7 w-7 rounded-full border flex items-center justify-center ${
+                                                isCompleted
+                                                    ? "border-emerald-500 bg-emerald-500 text-white"
+                                                    : isActive
+                                                        ? "border-emerald-500 bg-emerald-500 text-white"
+                                                        : "border-slate-300 bg-white text-slate-700"
+                                            }`}
+                                        >
+                                            {isCompleted ? "✓" : step.id}
+                                        </div>
+                                        <span className={isActive || isCompleted ? "text-emerald-700" : ""}>
+                                            {step.label}
+                                        </span>
+                                    </div>
+                                    {index < steps.length - 1 && (
+                                        <span className="mx-4 h-px w-10 bg-slate-300" />
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
 
                     {items.length > 0 && (
