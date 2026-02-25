@@ -24,6 +24,9 @@ public class OrderRequest {
     @NotBlank(message = "Shipping address is required")
     private String shippingAddress;
 
+    @NotBlank(message = "Payment method is required")
+    private String paymentMethod;
+
     @NotEmpty(message = "Order items are required")
     @Valid
     private List<OrderItemRequest> items;
