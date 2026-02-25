@@ -106,7 +106,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
 
                     {/* Desktop Search */}
                     <div className="relative hidden md:flex w-[560px] max-w-[58vw]">
-                        <div className="flex w-full items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
+                        <div className="flex w-full items-center gap-2 rounded-2xl bg-slate-50 px-3 py-1.5 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
                             <FiSearch className="text-slate-400" />
                             <input
                                 value={q}
@@ -119,7 +119,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                             />
                             <button
                                 type="button"
-                                className="h-9 rounded-xl bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-500"
+                                className="h-8 rounded-xl bg-emerald-600 px-3 text-xs font-semibold text-white hover:bg-emerald-700 focus-visible:ring-2 focus-visible:ring-emerald-500"
                             >
                                 Search
                             </button>
@@ -229,7 +229,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                 </div>
 
                 {/* Top Navigation */}
-                <nav className="flex items-center gap-6 overflow-x-auto pb-3 text-sm text-slate-600">
+                <nav className="flex items-center gap-6 overflow-x-auto pb-3 text-base text-slate-600">
                     {topNav.map((item) => (
                         <Link
                             key={item}
@@ -244,7 +244,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
 
                 {/* Mobile Search */}
                 <div className="md:hidden pb-3">
-                    <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-2 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
+                    <div className="flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-1.5 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
                         <FiSearch className="text-slate-400" />
                         <input
                             value={q}
@@ -254,7 +254,7 @@ export default function Navbar({ q, setQ, cartCount = 0, brand = { name: "ShopEa
                         />
                         <button
                             type="button"
-                            className="rounded-lg bg-emerald-600 px-3 py-1 text-xs font-semibold text-white"
+                            className="rounded-lg bg-emerald-600 px-3 py-0.5 text-xs font-semibold text-white"
                         >
                             Go
                         </button>
