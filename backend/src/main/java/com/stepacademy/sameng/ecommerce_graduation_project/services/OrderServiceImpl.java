@@ -66,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
                 .customerEmail(valueOrFallback(request.getCustomerEmail(), user.getEmail()))
                 .customerPhone(valueOrFallback(request.getCustomerPhone(), user.getPhoneNumber()))
                 .shippingAddress(request.getShippingAddress())
+                .paymentMethod(request.getPaymentMethod())
                 .build();
 
         List<OrderItem> items = new ArrayList<>();
@@ -108,6 +109,7 @@ public class OrderServiceImpl implements OrderService {
         response.setCustomerEmail(order.getCustomerEmail());
         response.setCustomerPhone(order.getCustomerPhone());
         response.setShippingAddress(order.getShippingAddress());
+        response.setPaymentMethod(order.getPaymentMethod());
         if (order.getStatus() != null) {
             response.setStatus(order.getStatus().name());
         }
