@@ -84,7 +84,13 @@ function ProductCard({ product, onAdd, onView }) {
   );
 }
 
-export default function FeaturedDealsSection({ featuredDeals = [] }) {
+export default function FeaturedDealsSection({
+  featuredDeals = [],
+  title = "Featured Deals",
+  showCta = true,
+  ctaLabel = "See all deals ->",
+  ctaTo = "/products",
+}) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -101,14 +107,16 @@ export default function FeaturedDealsSection({ featuredDeals = [] }) {
   return (
     <section className="mt-12">
       <div className="flex items-end justify-between">
-        <h2 className="text-xl font-semibold tracking-tight">Featured Deals</h2>
-        <button
-          type="button"
-          onClick={() => navigate("/products")}
-          className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
-        >
-          See all deals ->
-        </button>
+        <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+        {showCta && (
+          <button
+            type="button"
+            onClick={() => navigate(ctaTo)}
+            className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+          >
+            {ctaLabel}
+          </button>
+        )}
       </div>
 
       <div className="mt-4 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
