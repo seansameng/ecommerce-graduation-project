@@ -183,13 +183,7 @@ export default function Orders() {
                   >
                     {expandedId === order.id ? "Hide details" : "View details"}
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => handleReorder(order)}
-                    className="rounded-xl bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700"
-                  >
-                    Reorder
-                  </button>
+                  {null}
                 </div>
 
                 {expandedId === order.id && (
