@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 
 import HeroSection from "../components/hero/HeroSection.jsx";
 import InfoPills from "../components/hero/InfoPills.jsx";
@@ -128,6 +129,7 @@ export default function Home() {
       <Navbar q={q} setQ={setQ} cartCount={3} brand={{ name: "ShopEase", href: "/" }} />
 
       <main className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8">
+        <Breadcrumb />
         <HeroSection featuredDeals={featuredDeals} />
         {/* <InfoPills /> */}
         {hasQuery ? (
