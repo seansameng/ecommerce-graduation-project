@@ -16,7 +16,9 @@ import com.stepacademy.sameng.ecommerce_graduation_project.models.Order;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.OrderItem;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Product;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
+import com.stepacademy.sameng.ecommerce_graduation_project.models.Payment;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.OrderRepository;
+import com.stepacademy.sameng.ecommerce_graduation_project.repository.PaymentRepository;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.ProductRepository;
 import com.stepacademy.sameng.ecommerce_graduation_project.repository.UserRepository;
 
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final PaymentRepository paymentRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -110,6 +113,17 @@ public class OrderServiceImpl implements OrderService {
         response.setCustomerPhone(order.getCustomerPhone());
         response.setShippingAddress(order.getShippingAddress());
         response.setPaymentMethod(order.getPaymentMethod());
+        Payment payment = paymentRepository.findByOrderId(order.getId()).orElse(null);
+        if (payment != null) {
+            response.setPaymentId(payment.getId());
+            if (payment.getStatus() != null) {
+                response.setPaymentStatus(payment.getStatus().name());
+            }
+            response.setPaymentAmount(payment.getAmount());
+            response.setPaymentTransactionRef(payment.getTransactionRef());
+            response.setPaymentPaidAt(payment.getPaidAt());
+            response.setPaymentCreatedAt(payment.getCreatedAt());
+        }
         if (order.getStatus() != null) {
             response.setStatus(order.getStatus().name());
         }
