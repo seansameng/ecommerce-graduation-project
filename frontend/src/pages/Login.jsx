@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login as loginApi } from "../api/authApi";
 import { FiMail, FiLock } from "react-icons/fi";
 import { motion } from "framer-motion";
-import Breadcrumb from "../components/Breadcrumb.jsx";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -61,7 +60,6 @@ const Login = () => {
     return (
         <div className="min-h-screen bg-slate-50">
             <div className="mx-auto max-w-md px-6 py-12">
-                <Breadcrumb />
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
                     <h1 className="text-3xl font-extrabold text-gray-900">Welcome back</h1>
                     <p className="mt-2 text-gray-500">Log in to continue.</p>
