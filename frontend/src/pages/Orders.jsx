@@ -12,7 +12,7 @@ const formatMoney = (value) => {
 };
 
 const formatDate = (value) => {
-  if (!value) return "—";
+  if (!value) return "-";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
@@ -169,10 +169,10 @@ export default function Orders() {
                     <div className="text-sm font-semibold text-slate-900">Order #{order.id}</div>
                     <div className="text-xs text-slate-500">Placed on {formatDate(order.createdAt)}</div>
                     <div className="mt-1 text-xs text-slate-500">
-                      {order.items?.length || 0} items · {order.shippingAddress || "No address"}
+                      {order.items?.length || 0} items - {order.shippingAddress || "No address"}
                     </div>
                     <div className="mt-1 text-xs text-slate-500">
-                      Payment: {order.paymentMethod || "—"} ·{" "}
+                      Payment: {order.paymentMethod || "-"} -{" "}
                       {formatMoney(order.paymentAmount ?? order.total)}
                     </div>
                   </div>
@@ -223,7 +223,7 @@ export default function Orders() {
                         <div>
                           <span className="text-slate-500">Method:</span>{" "}
                           <span className="font-semibold text-slate-800">
-                            {order.paymentMethod || "—"}
+                            {order.paymentMethod || "-"}
                           </span>
                         </div>
                         {order.paymentTransactionRef ? (
@@ -269,3 +269,4 @@ export default function Orders() {
     </div>
   );
 }
+
