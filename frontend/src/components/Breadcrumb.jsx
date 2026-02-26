@@ -47,7 +47,7 @@ const Breadcrumb = ({ items }) => {
     const crumbs = items && items.length > 0 ? items : buildCrumbs(location.pathname);
 
     return (
-        <nav className="text-xs text-slate-500" aria-label="Breadcrumb">
+        <nav className="text-sm text-slate-500" aria-label="Breadcrumb">
             {crumbs.map((item, idx) => {
                 const isLast = idx === crumbs.length - 1;
                 return (
