@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import useCart from "../hooks/useCart";
-import { createOrder } from "../api/orderApi";
+import { createOrder } from "../api/orderApi";
+import { createPayment } from "../api/paymentApi";
 import { getUserIdFromToken } from "../utils/jwt";
 
 const money = (n) => `$${Number(n || 0).toFixed(2)}`;
