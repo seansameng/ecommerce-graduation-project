@@ -6,6 +6,7 @@ import {
     updateCategory,
     deleteCategoryById,
 } from "../../api/adminCategoryApi";
+import ConfirmDialog from "../../components/ConfirmDialog.jsx";
 
 const emptyCategory = {
     id: null,
@@ -24,6 +25,14 @@ export default function CategoryManagement() {
     const [form, setForm] = useState(emptyCategory);
     const [saving, setSaving] = useState(false);
     const [formErr, setFormErr] = useState("");
+    const [confirm, setConfirm] = useState({
+        open: false,
+        id: null,
+        name: "",
+        error: "",
+        loading: false,
+    });
+    const [flash, setFlash] = useState({ type: "", message: "" });
 
     const fetchCategories = async () => {
         setLoading(true);
@@ -76,6 +85,11 @@ export default function CategoryManagement() {
         setSaving(false);
     };
 
+    const showFlash = (type, message) => {
+        setFlash({ type, message });
+        setTimeout(() => setFlash({ type: "", message: "" }), 3000);
+    };
+
     const onChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
@@ -124,18 +138,41 @@ export default function CategoryManagement() {
         }
     };
 
-    const handleDelete = async (id) => {
-        const ok = window.confirm("Delete this category?");
-        if (!ok) return;
+    const openDelete = (category) => {
+        setConfirm({
+            open: true,
+            id: category?.id ?? null,
+            name: category?.name || "this category",
+            error: "",
+            loading: false,
+        });
+    };
 
+    const closeDelete = () => {
+        setConfirm({ open: false, id: null, name: "", error: "", loading: false });
+    };
+
+    const confirmDelete = async () => {
+        if (confirm.id == null) return;
         const prev = items;
-        setItems((p) => p.filter((x) => x.id !== id));
+        setConfirm((c) => ({ ...c, loading: true }));
+        setItems((p) => p.filter((x) => x.id !== confirm.id));
 
         try {
-            await deleteCategoryById(id);
+            await deleteCategoryById(confirm.id);
+            closeDelete();
+            showFlash("success", "Category deleted successfully.");
         } catch (e) {
             setItems(prev);
-            alert(e?.response?.data?.message || "Delete failed");
+            const msg =
+                e?.response?.data?.message ||
+                e?.message ||
+                "Delete failed";
+            const friendly = msg.toLowerCase().includes("foreign key")
+                ? "Cannot delete a category that is used by products."
+                : msg;
+            setConfirm((c) => ({ ...c, loading: false, error: friendly }));
+            showFlash("error", "Could not delete category.");
         }
     };
 
@@ -175,6 +212,19 @@ export default function CategoryManagement() {
                     </button>
                 </div>
             </div>
+
+            {flash.message ? (
+                <div
+                    className={[
+                        "mt-4 rounded-2xl border px-5 py-3 text-sm font-semibold",
+                        flash.type === "success"
+                            ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+                            : "border-rose-200 bg-rose-50 text-rose-700",
+                    ].join(" ")}
+                >
+                    {flash.message}
+                </div>
+            ) : null}
 
             {loading && (
                 <div className="mt-6 rounded-2xl bg-white border border-gray-200 p-5 text-gray-600">
@@ -246,7 +296,7 @@ export default function CategoryManagement() {
                                                         <FiEdit2 />
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDelete(c.id)}
+                                                        onClick={() => openDelete(c)}
                                                         className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
                                                         aria-label="Delete category"
                                                         title="Delete"
@@ -342,6 +392,18 @@ export default function CategoryManagement() {
                     </div>
                 </div>
             )}
+
+            <ConfirmDialog
+                open={confirm.open}
+                title="Delete category"
+                description={`Delete "${confirm.name}"? Products may still reference it.`}
+                error={confirm.error}
+                confirmText="Delete"
+                onConfirm={confirmDelete}
+                onClose={closeDelete}
+                loading={confirm.loading}
+            />
+
         </>
     );
 }
