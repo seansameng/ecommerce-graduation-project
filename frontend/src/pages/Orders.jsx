@@ -210,6 +210,30 @@ export default function Orders() {
 
                 {expandedId === order.id && (
                   <div className="mt-4 space-y-2">
+                    <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs text-slate-600">
+                      <div className="flex flex-wrap gap-3">
+                        <div>
+                          <span className="text-slate-500">Payment status:</span>{" "}
+                          <span className="font-semibold text-slate-800">
+                            {order.paymentStatus || "Pending"}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500">Method:</span>{" "}
+                          <span className="font-semibold text-slate-800">
+                            {order.paymentMethod || "—"}
+                          </span>
+                        </div>
+                        {order.paymentTransactionRef ? (
+                          <div>
+                            <span className="text-slate-500">Ref:</span>{" "}
+                            <span className="font-semibold text-slate-800">
+                              {order.paymentTransactionRef}
+                            </span>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
                     {(order.items || []).map((item) => (
                       <div key={`${order.id}-${item.productId}`} className="flex items-center gap-3">
                         {item.productImageUrl ? (
