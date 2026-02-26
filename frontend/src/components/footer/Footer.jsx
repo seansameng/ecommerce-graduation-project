@@ -15,122 +15,76 @@ const Footer = ({ categories = [] }) => {
 
     return (
         <footer className="border-t border-slate-100 bg-white">
-            <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.1fr_1fr_1fr_1fr]">
+            <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
+                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                     {/* Brand */}
                     <div>
                         <div className="flex items-center gap-2">
-                            <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500 text-white font-bold">
+                            <div className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-500 text-white text-sm font-bold">
                                 S
                             </div>
-                            <div className="text-lg font-extrabold tracking-tight text-slate-900">
+                            <div className="text-base font-extrabold tracking-tight text-slate-900">
                                 Shop<span className="text-emerald-600">Ease</span>
                             </div>
                         </div>
-                        <p className="mt-3 text-sm text-slate-500">
+                        <p className="mt-2 text-sm text-slate-500">
                             Premium tech, simple shopping.
                         </p>
                     </div>
 
-                    {/* Shop */}
-                    <div>
-                        <div className="text-sm font-extrabold text-slate-900">Shop</div>
-                        <ul className="mt-3 space-y-2 text-sm text-slate-500">
-                            <li>
-                                <a className="hover:text-slate-900" href="/products">
-                                    All Products
-                                </a>
-                            </li>
-                            {categoryItems.map((category) => (
-                                <li key={category.name}>
-                                    <a
-                                        className="inline-flex items-center gap-2 hover:text-slate-900"
-                                        href={`/products?category=${encodeURIComponent(category.name)}`}
-                                    >
-                                        {category.imageUrl ? (
-                                            <img
-                                                src={category.imageUrl}
-                                                alt={`${category.name} category`}
-                                                className="h-5 w-5 rounded object-cover"
-                                                loading="lazy"
-                                            />
-                                        ) : null}
-                                        <span>{category.name}</span>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Contact */}
-                    <div>
-                        <div className="text-sm font-extrabold text-slate-900">Contact</div>
-                        <ul className="mt-3 space-y-2 text-sm text-slate-500">
-                            <li>
-                                <a className="hover:text-slate-900" href="mailto:support@shopease.com">
-                                    support@shopease.com
-                                </a>
-                            </li>
-                            <li>
-                                <a className="hover:text-slate-900" href="tel:+85512345678">
-                                    +855 12 345 678
-                                </a>
-                            </li>
-                            <li className="leading-relaxed">Phnom Penh, Cambodia</li>
-                        </ul>
+                    {/* Links */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                        <a className="hover:text-slate-900" href="/products">
+                            Products
+                        </a>
+                        <a className="hover:text-slate-900" href="/orders">
+                            Orders
+                        </a>
+                        <a className="hover:text-slate-900" href="/account">
+                            Account
+                        </a>
+                        <a className="hover:text-slate-900" href="/settings">
+                            Settings
+                        </a>
+                        <a className="hover:text-slate-900" href="mailto:support@shopease.com">
+                            support@shopease.com
+                        </a>
                     </div>
 
                     {/* Social */}
-                    <div>
-                        <div className="text-sm font-extrabold text-slate-900">Social</div>
-                        <ul className="mt-3 space-y-2 text-sm text-slate-500">
-                            <li>
-                                <a
-                                    className="inline-flex items-center gap-2 hover:text-slate-900"
-                                    href="https://www.facebook.com/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Facebook
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="inline-flex items-center gap-2 hover:text-slate-900"
-                                    href="https://www.instagram.com/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Instagram
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="inline-flex items-center gap-2 hover:text-slate-900"
-                                    href="https://www.tiktok.com/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    TikTok
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="inline-flex items-center gap-2 hover:text-slate-900"
-                                    href="https://www.youtube.com/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    YouTube
-                                </a>
-                            </li>
-                        </ul>
+                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                        <a
+                            className="hover:text-slate-900"
+                            href="https://www.facebook.com/"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Facebook
+                        </a>
+                        <span className="text-slate-300">•</span>
+                        <a
+                            className="hover:text-slate-900"
+                            href="https://www.instagram.com/"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Instagram
+                        </a>
+                        <span className="text-slate-300">•</span>
+                        <a
+                            className="hover:text-slate-900"
+                            href="https://www.tiktok.com/"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            TikTok
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div className="border-t border-slate-100">
-                <div className="w-full px-4 py-5 text-xs text-slate-400 sm:px-6 lg:px-8">
+                <div className="w-full px-4 py-4 text-xs text-slate-400 sm:px-6 lg:px-8">
                     © {new Date().getFullYear()} ShopEase. All rights reserved.
                 </div>
             </div>
