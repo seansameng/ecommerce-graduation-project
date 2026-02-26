@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heart, ShoppingCart } from "lucide-react";
 import { getProductById, getProducts } from "../api/productApi";
 import Navbar from "../components/navbar/Navbar.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import useCart from "../hooks/useCart";
 
