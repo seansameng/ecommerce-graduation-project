@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, X } from "lucide-react";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 import { getProducts } from "../api/productApi";
 import useCart from "../hooks/useCart";
 
@@ -164,6 +165,7 @@ export default function Product() {
       </section> */}
 
       <section className="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8 py-6">
+        <Breadcrumb />
         <div className="mb-4 flex justify-end lg:hidden">
           <button
             type="button"
