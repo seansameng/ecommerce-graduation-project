@@ -8,11 +8,11 @@ import { getUserIdFromToken } from "../utils/jwt";
 
 const money = (n) => `$${Number(n || 0).toFixed(2)}`;
 
-const PAYMENT_METHODS = [
-  { id: "CARD", label: "Credit / Debit Card" },
-  { id: "PAYPAL", label: "PayPal" },
-  { id: "ABA_KHQR", label: "ABA / KHQR" },
-];
+const PAYMENT_METHODS = [
+  { id: "CARD", label: "Credit / Debit Card" },
+  { id: "WALLET", label: "PayPal / KHQR Wallet" },
+  { id: "COD", label: "Cash on Delivery" },
+];
 
 export default function Checkout() {
   const navigate = useNavigate();
