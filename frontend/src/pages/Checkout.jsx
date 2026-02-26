@@ -89,10 +89,22 @@ export default function Checkout() {
         items: orderItems,
       };
 
-      const res = await createOrder(payload);
-      const created = res?.data;
-
-      clearCart();
+      const res = await createOrder(payload);
+      const created = res?.data;
+
+      if (created?.id != null) {
+        try {
+          await createPayment({
+            orderId: created.id,
+            method: paymentMethod,
+            amount: created.total,
+          });
+        } catch (paymentErr) {
+          console.warn("Payment creation failed", paymentErr);
+        }
+      }
+
+      clearCart();
       if (created?.id != null) {
         navigate(`/order-success/${created.id}`);
       } else {
