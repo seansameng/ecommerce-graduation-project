@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 import { getMyProfile, updateMyProfile } from "../api/userApi";
 import useCart from "../hooks/useCart";
 
@@ -70,6 +71,7 @@ export default function Settings() {
       <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
 
       <section className="relative mx-auto max-w-[1100px] px-4 py-10 md:px-6 lg:px-8">
+        <Breadcrumb />
         <div className="pointer-events-none absolute -top-10 right-6 h-40 w-40 rounded-full bg-emerald-200/40 blur-3xl" />
 
         <div className="relative flex flex-col gap-3 rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur md:flex-row md:items-center md:justify-between md:p-8">
