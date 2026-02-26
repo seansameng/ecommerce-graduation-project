@@ -2,6 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Sidebar from "./Sidebar";
+import Breadcrumb from "./Breadcrumb.jsx";
 
 const AdminLayout = ({ title, children }) => {
     const navigate = useNavigate();
@@ -52,7 +53,10 @@ const AdminLayout = ({ title, children }) => {
                 </div>
 
                 {/* Page content */}
-                <main className="p-6">{children ? children : <Outlet />}</main>
+                <main className="p-6">
+                    <Breadcrumb />
+                    <div className="mt-4">{children ? children : <Outlet />}</div>
+                </main>
             </div>
         </div>
     );
