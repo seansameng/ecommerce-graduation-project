@@ -5,6 +5,7 @@ import useCart from "../hooks/useCart";
 import Navbar from "../components/navbar/Navbar.jsx";
 
 import Footer from "../components/footer/Footer.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 
 import { useState } from "react";
 
@@ -51,6 +52,7 @@ export default function CartPage() {
 
 
             <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+                <Breadcrumb />
 
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
