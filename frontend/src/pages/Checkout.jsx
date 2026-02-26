@@ -334,21 +334,21 @@ export default function Checkout() {
                     </div>
                   )}
 
-                  {paymentMethod === "PAYPAL" && (
-                    <div className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
-                      You will be redirected to PayPal after placing your order.
-                    </div>
-                  )}
-
-                  {paymentMethod === "ABA_KHQR" && (
-                    <div className="mt-4 rounded-2xl border border-dashed border-emerald-200 bg-emerald-50/40 p-6 text-center">
-                      <div className="text-sm font-semibold text-emerald-700">ABA Mobile / KHQR</div>
-                      <div className="mt-3 inline-flex h-24 w-24 items-center justify-center rounded-2xl border border-emerald-200 bg-white text-xs text-emerald-500">
-                        QR Code
-                      </div>
-                      <div className="mt-3 text-xs text-slate-500">Scan with ABA Mobile or any KHQR app.</div>
-                    </div>
-                  )}
+                  {paymentMethod === "WALLET" && (
+                    <div className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-600">
+                      You will be redirected to your wallet provider after placing your order.
+                    </div>
+                  )}
+
+                  {paymentMethod === "COD" && (
+                    <div className="mt-4 rounded-2xl border border-dashed border-amber-200 bg-amber-50/40 p-6 text-center">
+                      <div className="text-sm font-semibold text-amber-700">Cash on Delivery</div>
+                      <div className="mt-3 inline-flex h-24 w-24 items-center justify-center rounded-2xl border border-amber-200 bg-white text-xs text-amber-500">
+                        COD
+                      </div>
+                      <div className="mt-3 text-xs text-slate-500">Pay with cash when your order arrives.</div>
+                    </div>
+                  )}
                 </section>
               </div>
 
