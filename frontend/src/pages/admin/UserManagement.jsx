@@ -6,6 +6,7 @@ import {
     updateUserStatus,
     deleteUser,
 } from "../../api/adminuserApi";
+import ConfirmDialog from "../../components/ConfirmDialog.jsx";
 
 const roles = ["ADMIN", "VENDOR", "USER"];
 
@@ -33,6 +34,14 @@ const UserManagement = () => {
     // request state
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [confirm, setConfirm] = useState({
+        open: false,
+        id: null,
+        name: "",
+        error: "",
+        loading: false,
+    });
+    const [flash, setFlash] = useState({ type: "", message: "" });
 
     const fetchUsers = async () => {
         setLoading(true);
@@ -50,6 +59,11 @@ const UserManagement = () => {
     useEffect(() => {
         fetchUsers();
     }, []);
+
+    const showFlash = (type, message) => {
+        setFlash({ type, message });
+        setTimeout(() => setFlash({ type: "", message: "" }), 3000);
+    };
 
     const filtered = useMemo(() => {
         const keyword = q.trim().toLowerCase();
@@ -105,19 +119,41 @@ const UserManagement = () => {
         }
     };
 
-    const removeUser = async (id) => {
-        const ok = window.confirm("Delete this user?");
-        if (!ok) return;
+    const openDelete = (user) => {
+        setConfirm({
+            open: true,
+            id: user?.id ?? null,
+            name: user?.fullName || user?.email || "this user",
+            error: "",
+            loading: false,
+        });
+    };
 
-        // optimistic
+    const closeDelete = () => {
+        setConfirm({ open: false, id: null, name: "", error: "", loading: false });
+    };
+
+    const confirmDelete = async () => {
+        if (confirm.id == null) return;
         const prev = items;
-        setItems((p) => p.filter((u) => u.id !== id));
+        setConfirm((c) => ({ ...c, loading: true }));
+        setItems((p) => p.filter((u) => u.id !== confirm.id));
 
         try {
-            await deleteUser(id);
+            await deleteUser(confirm.id);
+            closeDelete();
+            showFlash("success", "User deleted successfully.");
         } catch (e) {
             setItems(prev);
-            alert(e?.response?.data?.message || "Delete failed");
+            const msg =
+                e?.response?.data?.message ||
+                e?.message ||
+                "Delete failed";
+            const friendly = msg.toLowerCase().includes("foreign key")
+                ? "Cannot delete a user that is linked to existing orders."
+                : msg;
+            setConfirm((c) => ({ ...c, loading: false, error: friendly }));
+            showFlash("error", "Could not delete user.");
         }
     };
 
@@ -151,6 +187,19 @@ const UserManagement = () => {
                     </button>
                 </div>
             </div>
+
+            {flash.message ? (
+                <div
+                    className={[
+                        "mt-4 rounded-2xl border px-5 py-3 text-sm font-semibold",
+                        flash.type === "success"
+                            ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+                            : "border-rose-200 bg-rose-50 text-rose-700",
+                    ].join(" ")}
+                >
+                    {flash.message}
+                </div>
+            ) : null}
 
             {/* Status blocks */}
             {loading && (
@@ -206,8 +255,8 @@ const UserManagement = () => {
                             className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
                         >
                             <option value="newest">Sort: Newest</option>
-                            <option value="name">Sort: Name A→Z</option>
-                            <option value="role">Sort: Role A→Z</option>
+                            <option value="name">Sort: Name A-Z</option>
+                            <option value="role">Sort: Role A-Z</option>
                         </select>
 
                         <div className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 flex items-center">
@@ -298,7 +347,7 @@ const UserManagement = () => {
                                                     </button>
 
                                                     <button
-                                                        onClick={() => removeUser(u.id)}
+                                                        onClick={() => openDelete(u)}
                                                         className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
                                                         aria-label="Delete user"
                                                         title="Delete"
@@ -323,6 +372,18 @@ const UserManagement = () => {
                     </div>
                 </>
             )}
+
+            <ConfirmDialog
+                open={confirm.open}
+                title="Delete user"
+                description={`Delete "${confirm.name}"? This cannot be undone.`}
+                error={confirm.error}
+                confirmText="Delete"
+                onConfirm={confirmDelete}
+                onClose={closeDelete}
+                loading={confirm.loading}
+            />
+
         </>
     );
 };
