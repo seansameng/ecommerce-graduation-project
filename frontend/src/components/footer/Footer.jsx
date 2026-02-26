@@ -16,7 +16,7 @@ const Footer = ({ categories = [] }) => {
     return (
         <footer className="border-t border-slate-100 bg-white">
             <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.2fr_1fr_1fr]">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.1fr_1fr_1fr_1fr]">
                     {/* Brand */}
                     <div>
                         <div className="flex items-center gap-2">
@@ -77,6 +77,53 @@ const Footer = ({ categories = [] }) => {
                                 </a>
                             </li>
                             <li className="leading-relaxed">Phnom Penh, Cambodia</li>
+                        </ul>
+                    </div>
+
+                    {/* Social */}
+                    <div>
+                        <div className="text-sm font-extrabold text-slate-900">Social</div>
+                        <ul className="mt-3 space-y-2 text-sm text-slate-500">
+                            <li>
+                                <a
+                                    className="inline-flex items-center gap-2 hover:text-slate-900"
+                                    href="https://www.facebook.com/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Facebook
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    className="inline-flex items-center gap-2 hover:text-slate-900"
+                                    href="https://www.instagram.com/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    className="inline-flex items-center gap-2 hover:text-slate-900"
+                                    href="https://www.tiktok.com/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    TikTok
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    className="inline-flex items-center gap-2 hover:text-slate-900"
+                                    href="https://www.youtube.com/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    YouTube
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
