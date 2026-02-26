@@ -169,6 +169,10 @@ export default function Orders() {
                     <div className="mt-1 text-xs text-slate-500">
                       {order.items?.length || 0} items · {order.shippingAddress || "No address"}
                     </div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      Payment: {order.paymentMethod || "—"} ·{" "}
+                      {formatMoney(order.paymentAmount ?? order.total)}
+                    </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span
@@ -177,6 +181,13 @@ export default function Orders() {
                       )}`}
                     >
                       {order.status || "Pending"}
+                    </span>
+                    <span
+                      className={`rounded-full border px-3 py-1 text-xs font-semibold ${getPaymentStatusStyle(
+                        order.paymentStatus || "Pending"
+                      )}`}
+                    >
+                      {order.paymentStatus || "Pending"}
                     </span>
                     <div className="text-sm font-semibold text-emerald-700">
                       {formatMoney(order.total)}
