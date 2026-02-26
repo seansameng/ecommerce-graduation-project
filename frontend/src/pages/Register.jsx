@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiPhone } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { register as registerApi } from "../api/authApi";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -102,6 +103,7 @@ const Register = () => {
     return (
         <div className="min-h-screen bg-slate-50">
             <div className="mx-auto max-w-xl px-6 py-10">
+                <Breadcrumb />
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
                     <h1 className="text-3xl font-extrabold text-gray-900">Create Your Account</h1>
                     <p className="mt-2 text-gray-500">Join TechStore and start shopping.</p>
