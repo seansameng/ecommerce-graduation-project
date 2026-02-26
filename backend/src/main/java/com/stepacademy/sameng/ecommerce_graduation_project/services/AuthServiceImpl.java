@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .enabled(true)
-                .role(Role.ADMIN)
+                .role(Role.USER)
                 .status(UserStatus.ACTIVE)
                 .build();
 
