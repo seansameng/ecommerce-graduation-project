@@ -7,6 +7,7 @@ import {
     deleteProductById,
 } from "../../api/adminProductApi";
 import { getCategories as getAdminCategories } from "../../api/adminCategoryApi";
+import ConfirmDialog from "../../components/ConfirmDialog.jsx";
 
 const makeEmptyProduct = (defaultCategory = "") => ({
     id: null,
@@ -46,6 +47,14 @@ export default function AdminProducts() {
     const [form, setForm] = useState(makeEmptyProduct());
     const [saving, setSaving] = useState(false);
     const [formErr, setFormErr] = useState("");
+    const [flash, setFlash] = useState({ type: "", message: "" });
+    const [confirm, setConfirm] = useState({
+        open: false,
+        id: null,
+        name: "",
+        error: "",
+        loading: false,
+    });
 
     const defaultCategory = categories[0] || "";
 
@@ -141,6 +150,11 @@ export default function AdminProducts() {
         setSaving(false);
     };
 
+    const showFlash = (type, message) => {
+        setFlash({ type, message });
+        setTimeout(() => setFlash({ type: "", message: "" }), 3000);
+    };
+
     const onChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
@@ -205,18 +219,41 @@ export default function AdminProducts() {
         }
     };
 
-    const handleDelete = async (id) => {
-        const ok = window.confirm("Delete this product?");
-        if (!ok) return;
+    const openDelete = (product) => {
+        setConfirm({
+            open: true,
+            id: product?.id ?? null,
+            name: product?.name || product?.productName || "this product",
+            error: "",
+            loading: false,
+        });
+    };
 
+    const closeDelete = () => {
+        setConfirm({ open: false, id: null, name: "", error: "", loading: false });
+    };
+
+    const confirmDelete = async () => {
+        if (confirm.id == null) return;
         const prev = items;
-        setItems((p) => p.filter((x) => x.id !== id));
+        setConfirm((c) => ({ ...c, loading: true }));
+        setItems((p) => p.filter((x) => x.id !== confirm.id));
 
         try {
-            await deleteProductById(id);
+            await deleteProductById(confirm.id);
+            closeDelete();
+            showFlash("success", "Product deleted successfully.");
         } catch (e) {
             setItems(prev);
-            alert(e?.response?.data?.message || "Delete failed");
+            const msg =
+                e?.response?.data?.message ||
+                e?.message ||
+                "Delete failed";
+            const friendly = msg.toLowerCase().includes("foreign key")
+                ? "Cannot delete a product that appears in existing orders."
+                : msg;
+            setConfirm((c) => ({ ...c, loading: false, error: friendly }));
+            showFlash("error", "Could not delete product.");
         }
     };
 
@@ -257,6 +294,19 @@ export default function AdminProducts() {
                     </button>
                 </div>
             </div>
+
+            {flash.message ? (
+                <div
+                    className={[
+                        "mt-4 rounded-2xl border px-5 py-3 text-sm font-semibold",
+                        flash.type === "success"
+                            ? "border-emerald-100 bg-emerald-50 text-emerald-700"
+                            : "border-rose-200 bg-rose-50 text-rose-700",
+                    ].join(" ")}
+                >
+                    {flash.message}
+                </div>
+            ) : null}
 
             {/* Loading/Error */}
             {loading && (
@@ -304,9 +354,9 @@ export default function AdminProducts() {
                             className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
                         >
                             <option value="newest">Sort: Newest</option>
-                            <option value="price_asc">Price: Low → High</option>
-                            <option value="price_desc">Price: High → Low</option>
-                            <option value="stock">Stock: High → Low</option>
+                            <option value="price_asc">Price: Low - High</option>
+                            <option value="price_desc">Price: High - Low</option>
+                            <option value="stock">Stock: High - Low</option>
                         </select>
 
                         <div className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 flex items-center">
@@ -405,7 +455,7 @@ export default function AdminProducts() {
                                                             <FiEdit2 />
                                                         </button>
                                                         <button
-                                                            onClick={() => handleDelete(p.id)}
+                                                            onClick={() => openDelete(p)}
                                                             className="inline-flex items-center justify-center rounded-xl border border-red-200 h-9 w-9 text-red-700 hover:bg-red-50 transition"
                                                             aria-label="Delete product"
                                                             title="Delete"
@@ -583,6 +633,18 @@ export default function AdminProducts() {
                     </div>
                 </div>
             )}
+
+            <ConfirmDialog
+                open={confirm.open}
+                title="Delete product"
+                description={`Delete "${confirm.name}"? This cannot be undone.`}
+                error={confirm.error}
+                confirmText="Delete"
+                onConfirm={confirmDelete}
+                onClose={closeDelete}
+                loading={confirm.loading}
+            />
+
         </>
     );
 }
