@@ -123,15 +123,14 @@ export default function ProductDetail() {
 
         {status === "success" && product && (
           <>
-            <div className="text-xs text-slate-500">
-              <Link to="/" className="hover:text-slate-900">Home</Link>{" "}
-              <span className="text-slate-300">/</span>{" "}
-              <Link to="/products" className="hover:text-slate-900">All Products</Link>{" "}
-              <span className="text-slate-300">/</span>{" "}
-              <span className="text-emerald-700">{product.category || "Products"}</span>{" "}
-              <span className="text-slate-300">/</span>{" "}
-              <span className="text-slate-700">{product.name}</span>
-            </div>
+            <Breadcrumb
+              items={[
+                { label: "Home", to: "/" },
+                { label: "All Products", to: "/products" },
+                { label: product.category || "Products", to: "/products" },
+                { label: product.name },
+              ]}
+            />
 
             <div className="mt-6 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
               <div className="rounded-3xl bg-white p-6 ring-1 ring-slate-200/70">
