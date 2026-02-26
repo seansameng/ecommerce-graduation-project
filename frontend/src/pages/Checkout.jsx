@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar.jsx";
-import Footer from "../components/footer/Footer.jsx";
+import Footer from "../components/footer/Footer.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
 import useCart from "../hooks/useCart";
 import { createOrder } from "../api/orderApi";
 import { createPayment } from "../api/paymentApi";
@@ -128,7 +129,8 @@ export default function Checkout() {
     >
       <Navbar q={q} setQ={setQ} cartCount={cartCount} brand={{ name: "ShopEase", href: "/" }} />
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+        <Breadcrumb />
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-3xl font-extrabold tracking-tight">Checkout</h1>
