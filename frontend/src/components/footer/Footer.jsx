@@ -15,7 +15,7 @@ const Footer = ({ categories = [] }) => {
 
     return (
         <footer className="border-t border-slate-100 bg-white">
-            <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+            <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.1fr_1fr_1fr_1fr]">
                     {/* Brand */}
                     <div>
@@ -130,7 +130,7 @@ const Footer = ({ categories = [] }) => {
             </div>
 
             <div className="border-t border-slate-100">
-                <div className="max-w-7xl mx-auto px-4 py-5 text-xs text-slate-400">
+                <div className="w-full px-4 py-5 text-xs text-slate-400 sm:px-6 lg:px-8">
                     © {new Date().getFullYear()} ShopEase. All rights reserved.
                 </div>
             </div>
