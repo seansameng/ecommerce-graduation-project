@@ -18,7 +18,6 @@ export default function ProductDetail() {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
   const [product, setProduct] = useState(null);
-  const [activeTab, setActiveTab] = useState("specs");
   const [qty, setQty] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState("Silver");
