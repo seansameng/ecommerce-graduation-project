@@ -15,8 +15,8 @@ const Footer = ({ categories = [] }) => {
 
     return (
         <footer className="border-t border-slate-100 bg-white">
-            <div className="w-full px-4 py-10 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.2fr]">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.2fr]">
                     {/* Logo + Tagline */}
                     <div>
                         <div className="flex items-center gap-2">
@@ -27,7 +27,7 @@ const Footer = ({ categories = [] }) => {
                                 Shop<span className="text-emerald-600">Ease</span>
                             </div>
                         </div>
-                        <p className="mt-2 text-sm text-slate-500">
+                        <p className="mt-1 text-xs text-slate-500">
                             Premium tech, simple shopping.
                         </p>
                     </div>
@@ -35,7 +35,7 @@ const Footer = ({ categories = [] }) => {
                     {/* Quick Links */}
                     <div>
                         <div className="text-sm font-extrabold text-slate-900">Quick Links</div>
-                        <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                        <ul className="mt-2 space-y-1 text-xs text-slate-600">
                             <li><a className="hover:text-slate-900" href="/products">Products</a></li>
                             <li><a className="hover:text-slate-900" href="/orders">Orders</a></li>
                             <li><a className="hover:text-slate-900" href="/account">Account</a></li>
@@ -46,7 +46,7 @@ const Footer = ({ categories = [] }) => {
                     {/* Categories */}
                     <div>
                         <div className="text-sm font-extrabold text-slate-900">Categories</div>
-                        <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                        <ul className="mt-2 space-y-1 text-xs text-slate-600">
                             <li>
                                 <a className="hover:text-slate-900" href="/products">All Products</a>
                             </li>
@@ -74,7 +74,7 @@ const Footer = ({ categories = [] }) => {
                     {/* Contact */}
                     <div>
                         <div className="text-sm font-extrabold text-slate-900">Contact</div>
-                        <div className="mt-3 space-y-2 text-sm text-slate-600">
+                        <div className="mt-2 space-y-1 text-xs text-slate-600">
                             <a className="block hover:text-slate-900" href="mailto:support@shopease.com">
                                 support@shopease.com
                             </a>
@@ -88,17 +88,17 @@ const Footer = ({ categories = [] }) => {
                     {/* Newsletter */}
                     <div>
                         <div className="text-sm font-extrabold text-slate-900">Newsletter</div>
-                        <p className="mt-2 text-sm text-slate-500">Get product updates and deals.</p>
-                        <form className="mt-3 flex gap-2">
+                        <p className="mt-1 text-xs text-slate-500">Get product updates and deals.</p>
+                        <form className="mt-2 flex gap-2">
                             <input
                                 type="email"
                                 placeholder="Email address"
                                 aria-label="Email address"
-                                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                             />
                             <button
                                 type="button"
-                                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-600"
+                                className="rounded-lg bg-emerald-500 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-600"
                             >
                                 Join
                             </button>
@@ -106,7 +106,7 @@ const Footer = ({ categories = [] }) => {
                     </div>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <a
                             className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 text-slate-600 hover:border-emerald-300 hover:text-emerald-700"
@@ -153,7 +153,7 @@ const Footer = ({ categories = [] }) => {
                             </svg>
                         </a>
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
+                    <div className="flex items-center gap-2 text-[11px] text-slate-500">
                         <span className="text-slate-400">Payments:</span>
                         <span className="rounded border border-slate-200 px-2 py-1">VISA</span>
                         <span className="rounded border border-slate-200 px-2 py-1">Mastercard</span>
@@ -162,7 +162,7 @@ const Footer = ({ categories = [] }) => {
                     </div>
                 </div>
 
-                <div className="mt-6 border-t border-slate-100 pt-4 text-xs text-slate-500">
+                <div className="mt-4 border-t border-slate-100 pt-3 text-[11px] text-slate-500">
                     <div className="flex flex-wrap items-center gap-2">
                         <span>© 2026 ShopEase</span>
                         <span className="text-slate-300">·</span>
