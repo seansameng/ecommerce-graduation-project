@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderItemRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderItemResponse;
 import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderResponse;
+import com.stepacademy.sameng.ecommerce_graduation_project.dtos.order.OrderStatusRequest;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Order;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.OrderItem;
+import com.stepacademy.sameng.ecommerce_graduation_project.models.OrderStatus;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Product;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.User;
 import com.stepacademy.sameng.ecommerce_graduation_project.models.Payment;
@@ -102,6 +106,18 @@ public class OrderServiceImpl implements OrderService {
         return toResponse(saved);
     }
 
+    @Override
+    @Transactional
+    public OrderResponse updateStatus(Long id, OrderStatusRequest request) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+
+        OrderStatus status = parseStatus(request.getStatus());
+        order.setStatus(status);
+
+        return toResponse(orderRepository.save(order));
+    }
+
     private OrderResponse toResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
@@ -166,5 +182,13 @@ public class OrderServiceImpl implements OrderService {
             return fallback;
         }
         return value;
+    }
+
+    private OrderStatus parseStatus(String value) {
+        try {
+            return OrderStatus.valueOf(value.trim().toUpperCase());
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid order status");
+        }
     }
 }
