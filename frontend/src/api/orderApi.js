@@ -15,3 +15,7 @@ export const getMyOrders = () => {
 export const getOrderById = (id) => {
     return api.get(`/orders/${id}`);
 };
+
+export const updateOrderStatus = (id, status) => {
+    return api.put(`/admin/orders/${id}/status`, { status });
+};
