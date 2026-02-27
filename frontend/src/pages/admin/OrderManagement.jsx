@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getOrders } from "../../api/orderApi";
+import { getOrders, updateOrderStatus } from "../../api/orderApi";
 import { FiEye } from "react-icons/fi";
 
 const fmtDate = (v) => {
@@ -31,6 +31,9 @@ export default function OrderManagement() {
     const [orders, setOrders] = useState([]);
     const [query, setQuery] = useState("");
     const [status, setStatus] = useState("ALL");
+    const [savingId, setSavingId] = useState(null);
+
+    const statusOptions = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"];
 
     useEffect(() => {
         let mounted = true;
@@ -103,6 +106,40 @@ export default function OrderManagement() {
         DELIVERED: "bg-emerald-50 text-emerald-700 border-emerald-200",
         CANCELLED: "bg-rose-50 text-rose-700 border-rose-200",
         NEW: "bg-slate-100 text-slate-700 border-slate-200",
+    };
+
+    const handleStatusChange = async (orderId, nextStatus) => {
+        const order = orders.find((o) => o.id === orderId);
+        if (!order) return;
+        const prevStatus = String(order.status || "PENDING").toUpperCase();
+        if (prevStatus === nextStatus) return;
+
+        setSavingId(orderId);
+        setError("");
+        setOrders((prev) =>
+            prev.map((o) => (o.id === orderId ? { ...o, status: nextStatus } : o))
+        );
+
+        try {
+            const res = await updateOrderStatus(orderId, nextStatus);
+            const updated = res?.data;
+            if (updated?.status) {
+                setOrders((prev) =>
+                    prev.map((o) => (o.id === orderId ? { ...o, status: updated.status } : o))
+                );
+            }
+        } catch (err) {
+            setOrders((prev) =>
+                prev.map((o) => (o.id === orderId ? { ...o, status: prevStatus } : o))
+            );
+            setError(
+                err?.response?.data?.message ||
+                    err?.message ||
+                    "Failed to update order status."
+            );
+        } finally {
+            setSavingId(null);
+        }
     };
 
     return (
@@ -217,14 +254,23 @@ export default function OrderManagement() {
                                         </div>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span
-                                            className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-extrabold ${
+                                        <select
+                                            value={String(o?.status || "PENDING").toUpperCase()}
+                                            onChange={(e) =>
+                                                handleStatusChange(o.id, e.target.value)
+                                            }
+                                            disabled={savingId === o.id}
+                                            className={`rounded-full border px-3 py-1 text-xs font-extrabold uppercase tracking-wide outline-none transition ${
                                                 statusStyles[String(o?.status || "NEW").toUpperCase()] ||
                                                 statusStyles.NEW
-                                            }`}
+                                            } ${savingId === o.id ? "opacity-70" : ""}`}
                                         >
-                                            {o.status || "NEW"}
-                                        </span>
+                                            {statusOptions.map((opt) => (
+                                                <option key={opt} value={opt}>
+                                                    {opt}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </td>
                                     <td className="px-4 py-3 font-bold text-slate-900">
                                         {fmtMoney(o.total)}
